@@ -1,3 +1,4 @@
+numpy
 -e git+https://github.com/OpenMDAO/OpenMDAO.git#egg=OpenMDAO
 -e git+https://github.com/mdolab/OpenAeroStruct.git#egg=OpenAeroStruct
 nose
