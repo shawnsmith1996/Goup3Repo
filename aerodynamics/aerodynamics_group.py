@@ -4,13 +4,13 @@ from openmdao.api import Group, IndepVarComp
 
 from lsdo_utils.api import OptionsDictionary, LinearCombinationComp, PowerCombinationComp, LinearPowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
 
-from Group3Repo.aerodynamics.lift_group import LiftGroup
-from Group3Repo.aerodynamics.induced_drag_group import InducedDragGroup
-from Group3Repo.aerodynamics.skin_friction_group import SkinFrictionGroup
-from Group3Repo.aerodynamics.wave_drag_coeff_comp import WaveDragCoeffComp
-from Group3Repo.geometry.lifting_surface_geometry import LiftingSurfaceGeometry
-from Group3Repo.geometry.body_geometry import BodyGeometry
-from Group3Repo.geometry.part_geometry import PartGeometry
+from aerodynamics.lift_group import LiftGroup
+from aerodynamics.induced_drag_group import InducedDragGroup
+from aerodynamics.skin_friction_group import SkinFrictionGroup
+from aerodynamics.wave_drag_coeff_comp import WaveDragCoeffComp
+from geometry.lifting_surface_geometry import LiftingSurfaceGeometry
+from geometry.body_geometry import BodyGeometry
+from geometry.part_geometry import PartGeometry
 
 
 class AerodynamicsGroup(Group):

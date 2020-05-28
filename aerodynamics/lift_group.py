@@ -4,7 +4,7 @@ from openmdao.api import Group
 
 from lsdo_utils.api import OptionsDictionary, LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, LinearPowerCombinationComp
 
-from Group3Repo.aerodynamics.lift_curve_slope_denominator_comp import LiftCurveSlopeDenominatorComp
+from aerodynamics.lift_curve_slope_denominator_comp import LiftCurveSlopeDenominatorComp
 
 
 class LiftGroup(Group):
