@@ -11,7 +11,7 @@ from openmdao.api import Problem
 from openmdao.utils.assert_utils import assert_check_partials
 
 
-class TestCDiComp(unittest.TestCase):
+class TestMassFlowRate(unittest.TestCase):
 
     def test_component_and_derivatives(self):
         prob = Problem()
