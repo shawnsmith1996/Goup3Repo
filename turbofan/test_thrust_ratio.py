@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[ ]:
 
 
 import unittest
 
-from turbofan.avaliable_thrust import Avaliable_Thrust
+from turbofan.thrust_ratio import Thrust_Ratio
 from openmdao.api import Problem
 from openmdao.utils.assert_utils import assert_check_partials
 
 
-class TestaAvaliableThrustComp(unittest.TestCase):
+class TestThrustRatio(unittest.TestCase):
 
     def test_component_and_derivatives(self):
         prob = Problem()
-        prob.model = Avaliable_Thrust(e=0.5)
+        prob.model = Thrust_Ratio(e=0.5)
         prob.setup()
         prob.run_model()
 
