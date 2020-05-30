@@ -5,7 +5,7 @@
 
 
 import numpy as np
-from openmdao.api import Group
+from openmdao.api import Group, IndepVarComp
 from lsdo_utils.api import OptionsDictionary, LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
 class TurbofanGroup(Group):
     def initialize(self):
@@ -19,11 +19,26 @@ class TurbofanGroup(Group):
         part = self.options['part']
         
         comp = IndepVarComp()
-        self.add_output('avaliable_thrust')
-        self.add_output('mass_flow_rate')
-        self.add_output('specific_fuel_consum')
-        self.add_output('thrust')
-        self.add_output('thrust_ratio')
+        comp.add_input('sealevel_thrust')
+        comp.add_input('density')
+        comp.add_input('sealevel_density')
+        comp.add_output('avaliable_thrust')
+
+        comp.add_input('throttle')
+        comp.add_output('thrust')
+
+        comp.add_input('mass_flow_rate_coeffecient')
+        comp.add_output('mass_flow_rate')
+
+
+        comp.add_input('B')
+        comp.add_input('k')
+        comp.add_input('M_inf')
+        comp.add_output('specific_fuel_consum')
+
+        comp.add_input('A')
+        comp.add_input('n')    
+        comp.add_output('thrust_ratio')
         self.add_subsystem('inputs_comp', comp, promotes=['*'])
         
         comp = PowerCombinationComp(
@@ -37,6 +52,7 @@ class TurbofanGroup(Group):
             )
         )
         prob.model.add_subsystem('available_thrust_comp',comp,promote=['*'])
+
 
         comp = PowerCombinationComp(
             shape=shape,
@@ -85,3 +101,6 @@ class TurbofanGroup(Group):
         )
         prob.model.add_subsystem('thrust_ratio_comp',comp,promote=['*'])
 
+
+
+# %%
