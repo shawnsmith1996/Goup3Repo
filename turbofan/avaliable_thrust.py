@@ -23,7 +23,7 @@ class Avaliable_Thrust(ExplicitComponent):
     def compute(self, inputs, outputs):
         sealv_thrust=inputs['sealevel_thrust']
         dens=inputs['density']
-        sealv_dens=inputs['max_density']
+        sealv_dens=inputs['sealevel_density']
         outputs['avaliable_thrust'] = (sealv_thrust * dens) / (sealv_dens)
         
 #         comp = PowerCombinationComp(

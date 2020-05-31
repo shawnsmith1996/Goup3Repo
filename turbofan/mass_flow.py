@@ -11,16 +11,12 @@ from openmdao.api import ExplicitComponent
 
 
 class Mass_Flow_Rate(ExplicitComponent):
-    def initialize(self):
-        self.options.declare('shape', types=tuple)
-        self.options.declare('options_dictionary')
 
     def setup(self):
-        shape = self.options['shape']
-        module = self.options['options_dictionary']
         
 #        self.add_input('mass_flow_rate_coeffecient')
         self.add_input('thrust')
+        self.add_input('thrust_specific_fuel_consumption')
         self.add_output('mass_flow_rate')
 
         self.declare_partials('mass_flow_rate', 'thrust')
@@ -29,7 +25,7 @@ class Mass_Flow_Rate(ExplicitComponent):
     def compute (self, inputs, outputs):
 #        mass_flow_rate_coeffecient=inputs['mass_flow_rate_coeffecient']
         thrust=inputs['thrust']
-        mass_flow_rate_coeffecient=module['thrust_specific_fuel_consumption']      
+        mass_flow_rate_coeffecient=inputs['thrust_specific_fuel_consumption']    
         outputs['mass_flow_rate'] = (thrust * mass_flow_rate_coeffecient)
 
 
@@ -44,10 +40,9 @@ class Mass_Flow_Rate(ExplicitComponent):
 #        )
 
     def compute_partials(self, inputs, partials):
-        e = self.options['e']
 #        mass_flow_rate_coeffecient=inputs['mass_flow_rate_coeffecient']
         thrust=inputs['thrust']
-        mass_flow_rate_coeffecient=module['thrust_specific_fuel_consumption']  
+        mass_flow_rate_coeffecient=inputs['thrust_specific_fuel_consumption']
         partials['mass_flow_rate', 'thrust'] = mass_flow_rate_coeffecient
 #        partials['mass_flow_rate', 'mass_flow_rate_coeffecient'] = thrust
 
