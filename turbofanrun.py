@@ -14,6 +14,13 @@
 
 import numpy as np
 from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
+
+from turbofan.pressure_comp import PressureComp
+from turbofan.temperature_comp import TemperatureComp
+from turbofan.density_comp import DensityComp
+
+from turbofan.mach_num import Mach_Num
+
 from turbofan.avaliable_thrust import Avaliable_Thrust
 from turbofan.thrust import Thrust
 from turbofan.mass_flow import Mass_Flow_Rate
@@ -27,32 +34,54 @@ prob = Problem()
 model = Group()
 
 comp = IndepVarComp()
+comp.add_output('altitude_km', val=0.04)
 comp.add_output('sealevel_thrust', val=0.04)
-comp.add_output('density', val=0.04)
-comp.add_output('sealevel_density', val=0.04)
 
-comp.add_output('throttle', val=0.04)
-comp.add_output('mass_flow_rate_coeffecient', val=0.04)
+comp.add_output('velocity_ms', val=0.015)
 
-comp.add_output('B', val=2 * np.pi)
+comp.add_output('B', val=0.2)
 comp.add_output('k', val=0.2)
-comp.add_output('M_inf', val=0.015)
 
 comp.add_output('A', val=8.)
 comp.add_output('n', val=8.)
-
 model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
 
-comp = Avaliable_Thrust(e=0.7)
+################ Constants #############
+comp = IndepVarComp()
+comp.add_output('sealevel_density', val=1.225)
+comp.add_output('throttle', val=1.)
+model.add_subsystem('constants', comp, promotes=['*'])
+
+############## System Section Bottom #########
+comp = PressureComp()
+model.add_subsystem('pressure_comp', comp, promotes=['*'])
+
+comp = TemperatureComp()
+model.add_subsystem('temperature_comp', comp, promotes=['*'])
+
+comp = DensityComp() 
+model.add_subsystem('density_comp', comp, promotes=['*'])
+## Atmosphere above
+
+comp= Mach_Num()
+model.add_subsystem('mach_comp', comp, promotes=['*'])
+## Mach num calc above
+
+## Thrust Equations
+comp = Avaliable_Thrust()
 model.add_subsystem('avaliable_thrust_comp', comp, promotes=['*'])
-comp = Thrust(e=0.7)
+
+comp = Thrust()
 model.add_subsystem('thrust_comp', comp, promotes=['*'])
-comp = Mass_Flow_Rate(e=0.7)
+
+comp = Mass_Flow_Rate()
 model.add_subsystem('mass_flow_comp', comp, promotes=['*'])
-comp = Specific_Fuel_Consum(e=0.7)
+
+comp = Specific_Fuel_Consum()
 model.add_subsystem('specific_fuel_consum_comp', comp, promotes=['*'])
-comp = Thrust_Ratio(e=0.7)
+
+comp = Thrust_Ratio()
 model.add_subsystem('thrust_ratio_comp', comp, promotes=['*'])
 
 #comp = ExecComp('CD = CD0 + CDi')
@@ -83,7 +112,6 @@ print('avaliable_thrust', prob['avaliable_thrust'])
 print('throttle', prob['throttle'])
 print('thrust', prob['thrust'])
 
-print('mass_flow_rate_coeffecient', prob['mass_flow_rate_coeffecient'])
 print('mass_flow_rate', prob['mass_flow_rate'])
 
 print('B', prob['B'])

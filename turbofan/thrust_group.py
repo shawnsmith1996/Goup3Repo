@@ -5,42 +5,48 @@
 
 
 import numpy as np
-from openmdao.api import Group, IndepVarComp
-from lsdo_utils.api import OptionsDictionary, LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
+from lsdo_utils.api import OptionsDictionary, LinearPowerCombinationComp,LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
+from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
+
+from turbofan.pressure_comp import PressureComp
+from turbofan.temperature_comp import TemperatureComp
+from turbofan.density_comp import DensityComp
+
+from turbofan.mach_num import Mach_Num
+
+from turbofan.avaliable_thrust import Avaliable_Thrust
+from turbofan.thrust import Thrust
+from turbofan.mass_flow import Mass_Flow_Rate
+from turbofan.specific_fuel_consum import Specific_Fuel_Consum
+from turbofan.thrust_ratio import Thrust_Ratio
+
 class TurbofanGroup(Group):
     def initialize(self):
         self.options.declare('shape', types=tuple)
-        self.options.declare('part', types=OptionsDictionary)
-        self.promotes = ['sealv_thrust']
+        self.options.declare('options_dictionary')
         
     def setup(self):
         shape = self.options['shape']
         module = self.options['options_dictionary']
-        part = self.options['part']
-        
-        comp = IndepVarComp()
-        comp.add_input('sealevel_thrust')
-        comp.add_input('density')
-        comp.add_input('sealevel_density')
-        comp.add_output('avaliable_thrust')
 
-        comp.add_input('throttle')
-        comp.add_output('thrust')
+        #computations below: 
+        #### Atmosphere Comp
+        comp = PressureComp()
+        self.add_subsystem('pressure_comp', comp, promotes=['*'])
 
-        comp.add_input('mass_flow_rate_coeffecient')
-        comp.add_output('mass_flow_rate')
+        comp = TemperatureComp()
+        self.add_subsystem('temperature_comp', comp, promotes=['*'])
 
+        comp = DensityComp() 
+        self.add_subsystem('density_comp', comp, promotes=['*'])
+        ## Atmosphere above
 
-        comp.add_input('B')
-        comp.add_input('k')
-        comp.add_input('M_inf')
-        comp.add_output('specific_fuel_consum')
+        # Mach Num Comp
+        comp= Mach_Num()
+        self.add_subsystem('mach_comp', comp, promotes=['*'])
+        ## Mach num calc above
 
-        comp.add_input('A')
-        comp.add_input('n')    
-        comp.add_output('thrust_ratio')
-        self.add_subsystem('inputs_comp', comp, promotes=['*'])
-        
+        #### Thrust Comp
         comp = PowerCombinationComp(
             shape=shape,
             out_name='available_thrust',
@@ -51,7 +57,7 @@ class TurbofanGroup(Group):
                 sealevel_density=-1.,
             )
         )
-        prob.model.add_subsystem('available_thrust_comp',comp,promote=['*'])
+        self.add_subsystem('available_thrust_comp',comp,promotes=['*'])
 
 
         comp = PowerCombinationComp(
@@ -62,7 +68,7 @@ class TurbofanGroup(Group):
                 thrust=1.,
             ),
         )
-        prob.model.add_subsystem('mass_flow_rate_comp',comp,promote=['*'])
+        self.add_subsystem('mass_flow_rate_comp',comp,promotes=['*'])
         
         comp = PowerCombinationComp(
             shape=shape,
@@ -72,7 +78,7 @@ class TurbofanGroup(Group):
                 available_thrust=1.,
             ),
         )
-        prob.model.add_subsystem('thrust_comp',comp,promote=['*'])
+        self.add_subsystem('thrust_comp',comp,promotes=['*'])
         
         comp = LinearPowerCombinationComp(
             shape=shape,
@@ -83,23 +89,15 @@ class TurbofanGroup(Group):
                     k=1.,
                     B=1.
                 )),
-            ],
-            constant=B,
-        )
-        prob.model.add_subsystem('specific_fuel_consum_comp',comp,promote=['*'])
-        
-        n=part['n']
-        comp = LinearPowerCombinationComp(
-            shape=shape,
-            out_name='thrust_ratio',
-            term_list=[
                 (1,dict(
-                    M_inf=-n,
-                    A=1.,
-                )), 
+                    B=1
+                ))
             ],
         )
-        prob.model.add_subsystem('thrust_ratio_comp',comp,promote=['*'])
+        self.add_subsystem('specific_fuel_consum_comp',comp,promotes=['*'])
+        
+        comp=Specific_Fuel_Consum()
+        self.add_subsystem('thrust_ratio_comp',comp,promotes=['*'])
 
 
 
