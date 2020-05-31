@@ -2,17 +2,19 @@ from __future__ import print_function
 import numpy as np
 
 from lsdo_utils.api import ArrayExplicitComponent
-
-from atmosph_utils import \
-    get_mask_arrays, compute_pressures, compute_pressure_derivs
+from turbofan.atmosph_utils import get_mask_arrays, compute_pressures, compute_pressure_derivs
 
 
 class PressureComp(ArrayExplicitComponent):
+    def initialize(self):
+        self.options.declare('shape', types=tuple)
 
-    def array_setup(self):
-        self.array_add_input('altitude_km')
-        self.array_add_output('pressure_MPa')
-        self.array_declare_partials('pressure_MPa', 'altitude_km')
+    def setup(self):
+        self.add_input('altitude_km')
+        self.add_output('pressure_MPa')
+        self.declare_partials('pressure_MPa', 'altitude_km')
+        
+
 
     def compute(self, inputs, outputs):
         h_m = inputs['altitude_km'] * 1e3

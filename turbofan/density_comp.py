@@ -3,17 +3,17 @@ import numpy as np
 
 from lsdo_utils.api import ArrayExplicitComponent
 
-from constants import R
+from turbofan.constants import R
 
 
 class DensityComp(ArrayExplicitComponent):
 
-    def array_setup(self):
-        self.array_add_input('pressure_MPa')
-        self.array_add_input('temperature')
-        self.array_add_output('density')
-        self.array_declare_partials('density', 'pressure_MPa')
-        self.array_declare_partials('density', 'temperature')
+    def setup(self):
+        self.add_input('pressure_MPa')
+        self.add_input('temperature')
+        self.add_output('density')
+        self.declare_partials('density', 'pressure_MPa')
+        self.declare_partials('density', 'temperature')
 
     def compute(self, inputs, outputs):
         p_Pa = inputs['pressure_MPa'] * 1e6

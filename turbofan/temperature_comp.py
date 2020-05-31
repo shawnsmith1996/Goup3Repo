@@ -3,16 +3,16 @@ import numpy as np
 
 from lsdo_utils.api import ArrayExplicitComponent
 
-from atmosph_utils import \
+from turbofan.atmosph_utils import \
     get_mask_arrays, compute_temps, compute_temp_derivs
 
 
 class TemperatureComp(ArrayExplicitComponent):
 
-    def array_setup(self):
-        self.array_add_input('altitude_km')
-        self.array_add_output('temperature')
-        self.array_declare_partials('temperature', 'altitude_km')
+    def setup(self):
+        self.add_input('altitude_km')
+        self.add_output('temperature')
+        self.declare_partials('temperature', 'altitude_km')
 
     def compute(self, inputs, outputs):
         h_m = inputs['altitude_km'] * 1e3

@@ -38,10 +38,9 @@ class Thrust(ExplicitComponent):
 #        )
 
     def compute_partials(self, inputs, partials):
-        e = self.options['e']
 
         throttle=inputs['throttle']
-        a_thrust=inputs['sealevel_thrust']
+        a_thrust=inputs['avaliable_thrust']
 
         partials['thrust', 'throttle'] = a_thrust
         partials['thrust', 'avaliable_thrust'] = throttle
