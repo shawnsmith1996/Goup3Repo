@@ -5,8 +5,6 @@ import numpy as np
 from turbofan.constants import R,gamma
 class Mach_Num(ExplicitComponent):
 
-    def initialize(self):
-        self.options.declare('e', types=float)
         
     def setup(self):
         self.add_input('velocity_ms')

@@ -1,12 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import unittest
 
-from turbofan.thrust_ratio import Thrust_Ratio
+from turbofan.mach_num() import Thrust_Ratio
 from openmdao.api import Problem
 from openmdao.utils.assert_utils import assert_check_partials
 
@@ -15,7 +9,7 @@ class TestThrustRatio(unittest.TestCase):
 
     def test_component_and_derivatives(self):
         prob = Problem()
-        prob.model = Thrust_Ratio(e=0.5)
+        prob.model = Mach_Num()
         prob.setup()
         prob.run_model()
 
@@ -25,4 +19,3 @@ class TestThrustRatio(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

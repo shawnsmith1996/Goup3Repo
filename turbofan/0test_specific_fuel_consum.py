@@ -15,7 +15,7 @@ class TestSpecificFuelConsumComp(unittest.TestCase):
 
     def test_component_and_derivatives(self):
         prob = Problem()
-        prob.model = Specific_Fuel_Consum(e=0.5)
+        prob.model = Specific_Fuel_Consum()
         prob.setup()
         prob.run_model()
 
