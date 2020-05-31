@@ -11,8 +11,6 @@ from lsdo_utils.comps.arithmetic_comps.linear_combination_comp import LinearComb
 
 class Specific_Fuel_Consum(ExplicitComponent):
 
-    def initialize(self):
-        self.options.declare('e', types=float)
         
     def setup(self):
         self.add_input('B')

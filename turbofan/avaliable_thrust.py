@@ -9,8 +9,6 @@ import numpy as np
 
 class Avaliable_Thrust(ExplicitComponent):
 
-    def initialize(self):
-        self.options.declare('e', types=float)
         
     def setup(self):
         self.add_input('sealevel_thrust')
@@ -25,7 +23,7 @@ class Avaliable_Thrust(ExplicitComponent):
     def compute(self, inputs, outputs):
         sealv_thrust=inputs['sealevel_thrust']
         dens=inputs['density']
-        sealv_dens=inputs['sealevel_density']
+        sealv_dens=inputs['max_density']
         outputs['avaliable_thrust'] = (sealv_thrust * dens) / (sealv_dens)
         
 #         comp = PowerCombinationComp(
