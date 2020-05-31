@@ -11,8 +11,6 @@ from openmdao.api import ExplicitComponent
 
 class Thrust(ExplicitComponent):
 
-    def initialize(self):
-        self.options.declare('e', types=float)
 
     def setup(self):
         self.add_input('throttle')

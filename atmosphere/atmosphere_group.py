@@ -4,11 +4,11 @@ from openmdao.api import Group, IndepVarComp
 
 from lsdo_utils.api import PowerCombinationComp
 
-from lsdo_aircraft.atmosphere.temperature_comp import TemperatureComp
-from lsdo_aircraft.atmosphere.pressure_comp import PressureComp
-from lsdo_aircraft.atmosphere.density_comp import DensityComp
-from lsdo_aircraft.atmosphere.sonic_speed_comp import SonicSpeedComp
-from lsdo_aircraft.atmosphere.viscosity_comp import ViscosityComp
+from atmosphere.temperature_comp import TemperatureComp
+from atmosphere.pressure_comp import PressureComp
+from atmosphere.density_comp import DensityComp
+from atmosphere.sonic_speed_comp import SonicSpeedComp
+from atmosphere.viscosity_comp import ViscosityComp
 
 
 class AtmosphereGroup(Group):
