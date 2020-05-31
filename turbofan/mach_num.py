@@ -2,7 +2,7 @@
 
 from openmdao.api import ExplicitComponent
 import numpy as np
-from constants import R,gamma
+from turbofan.constants import R,gamma
 class Mach_Num(ExplicitComponent):
 
     def initialize(self):

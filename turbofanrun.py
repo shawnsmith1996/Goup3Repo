@@ -19,6 +19,7 @@ from turbofan.pressure_comp import PressureComp
 from turbofan.temperature_comp import TemperatureComp
 from turbofan.density_comp import DensityComp
 
+
 from turbofan.mach_num import Mach_Num
 
 from turbofan.avaliable_thrust import Avaliable_Thrust
@@ -51,6 +52,7 @@ model.add_subsystem('inputs_comp', comp, promotes=['*'])
 comp = IndepVarComp()
 comp.add_output('sealevel_density', val=1.225)
 comp.add_output('throttle', val=1.)
+comp.add_output('thrust_specific_fuel_consumption', val=0.61)
 model.add_subsystem('constants', comp, promotes=['*'])
 
 ############## System Section Bottom #########
@@ -87,41 +89,41 @@ model.add_subsystem('thrust_ratio_comp', comp, promotes=['*'])
 #comp = ExecComp('CD = CD0 + CDi')
 #model.add_subsystem('cd_comp', comp, promotes=['*'])
 
-#comp = ExecComp('LD = CL/CD')
+#comp = ExecComp('LD = mass_flow_rate')
 #comp.add_objective('LD', scaler=-1.)
 #model.add_subsystem('ld_comp', comp, promotes=['*'])
 
 prob.model = model
 
-prob.driver = ScipyOptimizeDriver()
-prob.driver.options['optimizer'] = 'SLSQP'
-prob.driver.options['tol'] = 1e-15
-prob.driver.options['disp'] = True
+#prob.driver = ScipyOptimizeDriver()
+#prob.driver.options['optimizer'] = 'SLSQP'
+#prob.driver.options['tol'] = 1e-15
+#prob.driver.options['disp'] = True
 
 prob.setup()
 prob.run_model()
-prob.run_driver()
+#prob.run_driver()
 
 prob.check_partials(compact_print=True)
 
-print('sealevel_thrust', prob['sealevel_thrust'])
-print('density', prob['density'])
-print('sealevel_density', prob['sealevel_density'])
-print('avaliable_thrust', prob['avaliable_thrust'])
+#print('sealevel_thrust', prob['sealevel_thrust'])
+#print('density', prob['density'])
+#print('sealevel_density', prob['sealevel_density'])
+#print('avaliable_thrust', prob['avaliable_thrust'])
 
-print('throttle', prob['throttle'])
-print('thrust', prob['thrust'])
+#print('throttle', prob['throttle'])
+#print('thrust', prob['thrust'])
 
-print('mass_flow_rate', prob['mass_flow_rate'])
+#print('mass_flow_rate', prob['mass_flow_rate'])
 
-print('B', prob['B'])
-print('k', prob['k'])
-print('M_inf', prob['M_inf'])
-print('specific_fuel_consum', prob['specific_fuel_consum'])
+#print('B', prob['B'])
+#print('k', prob['k'])
+#print('M_inf', prob['M_inf'])
+#print('specific_fuel_consum', prob['specific_fuel_consum'])
 
-print('A', prob['A'])
-print('n', prob['n'])
-print('thrust_ratio', prob['thrust_ratio'])
+#print('A', prob['A'])
+#print('n', prob['n'])
+#print('thrust_ratio', prob['thrust_ratio'])
 
 
 

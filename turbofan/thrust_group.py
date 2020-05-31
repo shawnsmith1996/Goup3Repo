@@ -8,26 +8,21 @@ import numpy as np
 from lsdo_utils.api import OptionsDictionary, LinearPowerCombinationComp,LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
 from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
 
-from turbofan.pressure_comp import PressureComp
-from turbofan.temperature_comp import TemperatureComp
-from turbofan.density_comp import DensityComp
+from pressure_comp import PressureComp
+from temperature_comp import TemperatureComp
+from density_comp import DensityComp
 
-from turbofan.mach_num import Mach_Num
+from mach_num import Mach_Num
 
-from turbofan.avaliable_thrust import Avaliable_Thrust
-from turbofan.thrust import Thrust
-from turbofan.mass_flow import Mass_Flow_Rate
-from turbofan.specific_fuel_consum import Specific_Fuel_Consum
-from turbofan.thrust_ratio import Thrust_Ratio
+from avaliable_thrust import Avaliable_Thrust
+from thrust import Thrust
+from mass_flow import Mass_Flow_Rate
+from specific_fuel_consum import Specific_Fuel_Consum
+from thrust_ratio import Thrust_Ratio
 
 class TurbofanGroup(Group):
-    def initialize(self):
-        self.options.declare('shape', types=tuple)
-        self.options.declare('options_dictionary')
         
     def setup(self):
-        shape = self.options['shape']
-        module = self.options['options_dictionary']
 
         #computations below: 
         #### Atmosphere Comp
@@ -63,7 +58,7 @@ class TurbofanGroup(Group):
         comp = PowerCombinationComp(
             shape=shape,
             out_name='mass_flow_rate',
-            coeff=module['thrust_specific_fuel_consumption'],
+            coeff=inputs['thrust_specific_fuel_consumption'],
             powers_dict=dict(
                 thrust=1.,
             ),

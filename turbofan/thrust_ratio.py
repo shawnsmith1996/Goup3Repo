@@ -27,7 +27,7 @@ class Thrust_Ratio(ExplicitComponent):
         n=inputs['n']
         M_inf=inputs['M_inf']
         
-        outputs['specific_fuel_consum'] = A*M_inf**(-n)
+        outputs['thrust_ratio'] = A*M_inf**(-n)
         
 #        comp = LinearPowerCombinationComp(
 #            shape=shape,
