@@ -3,7 +3,7 @@ import numpy as np
 
 from lsdo_utils.api import ArrayExplicitComponent
 
-from turbofan.constants import R
+
 
 
 class DensityComp(ArrayExplicitComponent):
@@ -16,12 +16,14 @@ class DensityComp(ArrayExplicitComponent):
         self.declare_partials('density', 'temperature')
 
     def compute(self, inputs, outputs):
+        R=287.058
         p_Pa = inputs['pressure_MPa'] * 1e6
         temperature = inputs['temperature']
 
         outputs['density'] = p_Pa / R / temperature
 
     def compute_partials(self, inputs, partials):
+        R=287.058
         p_Pa = inputs['pressure_MPa'].flatten() * 1e6
         temperature = inputs['temperature'].flatten()
 
