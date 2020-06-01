@@ -2,7 +2,6 @@
 
 from openmdao.api import ExplicitComponent
 import numpy as np
-from turbofan.constants import R,gamma
 class Mach_Num(ExplicitComponent):
 
         
@@ -15,6 +14,8 @@ class Mach_Num(ExplicitComponent):
         self.declare_partials('M_inf', 'temperature')
 
     def compute(self, inputs, outputs):
+        R=287.058
+        gamma=1.4
         velocity=inputs['velocity_ms']
         temperature=inputs['temperature']
 
@@ -31,7 +32,8 @@ class Mach_Num(ExplicitComponent):
 #        )
 
     def compute_partials(self, inputs, partials):
-
+        R=287.058
+        gamma=1.4
         velocity=inputs['velocity_ms']
         temperature=inputs['temperature']
 
