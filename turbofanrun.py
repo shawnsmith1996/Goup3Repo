@@ -32,7 +32,7 @@ from turbofan.thottled_thrust import Thottled_Thrust
 prob = Problem()
 
 model = Group()
-
+   ################################ NOTE INCOMING SEALEVEL THRUST MUST BE TWICE THE AMMOUNT NEEDED TO FLY TO ADJUST FOR THOTTLE ###################
 comp = IndepVarComp()
 comp.add_output('altitude_km', val=0.04)
 comp.add_output('sealevel_thrust', val=0.04)
