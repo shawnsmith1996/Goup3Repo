@@ -19,16 +19,15 @@ from turbofan.pressure_comp import PressureComp
 from turbofan.temperature_comp import TemperatureComp
 from turbofan.density_comp import DensityComp
 
-
 from turbofan.mach_num import Mach_Num
 
-from turbofan.avaliable_thrust import Avaliable_Thrust
-from turbofan.thrust import Thrust
+
+from turbofan.zerospeed_thrust import Zerospeed_Thrust
 from turbofan.mass_flow import Mass_Flow_Rate
 from turbofan.specific_fuel_consum import Specific_Fuel_Consum
 from turbofan.thrust_ratio import Thrust_Ratio
-
-
+from turbofan.avaliable_thrust import Avaliable_Thrust
+from turbofan.thottled_thrust import Thottled_Thrust
 
 prob = Problem()
 
@@ -37,22 +36,19 @@ model = Group()
 comp = IndepVarComp()
 comp.add_output('altitude_km', val=0.04)
 comp.add_output('sealevel_thrust', val=0.04)
-
 comp.add_output('velocity_ms', val=0.015)
 
-comp.add_output('B', val=0.2)
 comp.add_output('k', val=0.2)
 
-comp.add_output('A', val=8.)
-comp.add_output('n', val=8.)
 model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
 
 ################ Constants #############
 comp = IndepVarComp()
-comp.add_output('sealevel_density', val=1.225)
-comp.add_output('throttle', val=1.)
-comp.add_output('thrust_specific_fuel_consumption', val=0.61)
+
+comp.add_output('A', val=8.)
+comp.add_output('B', val=0.2)
+comp.add_output('n', val=8.)
 model.add_subsystem('constants', comp, promotes=['*'])
 
 ############## System Section Bottom #########
@@ -71,20 +67,23 @@ model.add_subsystem('mach_comp', comp, promotes=['*'])
 ## Mach num calc above
 
 ## Thrust Equations
-comp = Avaliable_Thrust()
-model.add_subsystem('avaliable_thrust_comp', comp, promotes=['*'])
-
-comp = Thrust()
-model.add_subsystem('thrust_comp', comp, promotes=['*'])
-
-comp = Mass_Flow_Rate()
-model.add_subsystem('mass_flow_comp', comp, promotes=['*'])
+comp = Zerospeed_Thrust()
+model.add_subsystem('zerospeed_thrust_comp', comp, promotes=['*'])
 
 comp = Specific_Fuel_Consum()
 model.add_subsystem('specific_fuel_consum_comp', comp, promotes=['*'])
 
 comp = Thrust_Ratio()
 model.add_subsystem('thrust_ratio_comp', comp, promotes=['*'])
+
+comp = Avaliable_Thrust()
+model.add_subsystem('avaliable_thrust', comp, promotes=['*'])
+
+comp = Thottled_Thrust()
+model.add_subsystem('thottled_thrust_comp', comp, promotes=['*'])
+
+comp = Mass_Flow_Rate()
+model.add_subsystem('mass_flow_comp', comp, promotes=['*'])
 
 #comp = ExecComp('CD = CD0 + CDi')
 #model.add_subsystem('cd_comp', comp, promotes=['*'])
@@ -112,7 +111,7 @@ prob.check_partials(compact_print=True)
 #print('avaliable_thrust', prob['avaliable_thrust'])
 
 #print('throttle', prob['throttle'])
-#print('thrust', prob['thrust'])
+#print('zero_spd_thrust', prob['zero_spd_thrust'])
 
 #print('mass_flow_rate', prob['mass_flow_rate'])
 
