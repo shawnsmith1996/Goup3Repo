@@ -4,8 +4,6 @@ import numpy as np
 from lsdo_utils.api import ArrayExplicitComponent
 
 
-
-
 class DensityComp(ArrayExplicitComponent):
 
     def setup(self):
