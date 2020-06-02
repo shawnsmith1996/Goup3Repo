@@ -5,28 +5,26 @@ from openmdao.api import ExplicitComponent
 
 class FuelComp(ExplicitComponent):
 
-    def initialize(self):
-        
 
     def setup(self):
         self.add_input('We')
-        self.add_input('SFC')
+        self.add_input('Wfr')
         self.add_output('Fuel')
 
         self.declare_partials('Fuel', 'We')
-        self.declare_partials('Fuel', 'SFC')
+        self.declare_partials('Fuel', 'Wfr')
 
     def compute(self, inputs, outputs):
         
         We = inputs['We']
-        SFC = inputs['SFC']
+        Wfr = inputs['Wfr']
 
-        outputs['Fuel'] = 
+        outputs['Fuel'] = Wfr*We*6.7*0.896
 
     def compute_partials(self, inputs, partials):
 
         We = inputs['We']
         SFC = inputs['SFC']
         
-        partials['Fuel', 'We'] = 
-        partials['Fuel', 'SFC'] = 
+        partials['Fuel', 'We'] = *We*6.7*0.896
+        partials['Fuel', 'Wfr'] = We*6.7*0.896
