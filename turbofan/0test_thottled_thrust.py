@@ -6,7 +6,7 @@
 
 import unittest
 
-from turbofan.thrust import Thrust
+from turbofan.thottled_thrust import Thottled_Thrust
 from openmdao.api import Problem
 from openmdao.utils.assert_utils import assert_check_partials
 
@@ -15,7 +15,7 @@ class TestThrust(unittest.TestCase):
 
     def test_component_and_derivatives(self):
         prob = Problem()
-        prob.model = Thrust()
+        prob.model = Thottled_Thrust()
         prob.setup()
         prob.run_model()
 
