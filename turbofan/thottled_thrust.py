@@ -14,7 +14,6 @@ class Thottled_Thrust(ExplicitComponent):
 
     def setup(self):
         self.add_input('sealevel_thrust')
-        self.add_input('throttle')
         self.add_input('avaliable_thrust')
         self.add_output('thottled_thrust')
 
@@ -24,12 +23,12 @@ class Thottled_Thrust(ExplicitComponent):
     def compute(self, inputs, outputs):
         sealevel_thrust=inputs['sealevel_thrust']
         avaliable_thrust=inputs['avaliable_thrust']
-        if sealevel_thrust < avaliable_thrust:
+        if 0.5*sealevel_thrust > avaliable_thrust:
             throttle=1.
         elif avaliable_thrust < 0 or sealevel_thrust < 0:
             throttle=0.
         else:
-            throttle=avaliable_thrust/sealevel_thrust
+            throttle=0.5*(sealevel_thrust)/(avaliable_thrust)
 
         outputs['thottled_thrust'] = (throttle * avaliable_thrust)
     
@@ -45,18 +44,23 @@ class Thottled_Thrust(ExplicitComponent):
 #        )
 
     def compute_partials(self, inputs, partials):
-
+# thottled_thrust = 0.5*(sealevel_thrust)
+# if 0.5*sealevel_thrust > avaliable_thrust:
+# thottled_thrust = avaliable_thrust
+# if 0(avaliable_thrust < 0) or (sealevel_thrust < 0):
+# thottled_thrust = 0
         sealevel_thrust=inputs['sealevel_thrust']
         avaliable_thrust=inputs['avaliable_thrust']
-        if sealevel_thrust < avaliable_thrust:
+        if 0.5*sealevel_thrust > avaliable_thrust:
             throttle=1.
             partials['thottled_thrust', 'sealevel_thrust'] = 0
+            partials['thottled_thrust', 'avaliable_thrust'] = 1
         elif (avaliable_thrust < 0) or (sealevel_thrust < 0):
             throttle=0.
             partials['thottled_thrust', 'sealevel_thrust'] = 0
+            partials['thottled_thrust', 'avaliable_thrust'] = 0
         else:
-            throttle=avaliable_thrust/sealevel_thrust
-            partials['thottled_thrust', 'sealevel_thrust'] = (avaliable_thrust**2)*(-sealevel_thrust**(-2))
-
-        partials['thottled_thrust', 'avaliable_thrust'] = throttle
+            throttle=0.5*(sealevel_thrust)/(avaliable_thrust)
+            partials['thottled_thrust', 'sealevel_thrust'] = 0.5
+            partials['thottled_thrust', 'avaliable_thrust'] = 0
 

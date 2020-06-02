@@ -23,7 +23,7 @@ from avaliable_thrust import Avaliable_Thrust
 from thottled_thrust import Thottled_Thrust
 
 class TurbofanGroup(Group):
-   
+   ################################ NOTE INCOMING SEALEVEL THRUST MUST BE TWICE THE AMMOUNT NEEDED TO FLY TO ADJUST FOR THOTTLE ###################
     def setup(self):
 
         #computations below: 
