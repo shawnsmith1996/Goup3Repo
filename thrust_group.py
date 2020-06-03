@@ -8,20 +8,20 @@ import numpy as np
 from lsdo_utils.api import OptionsDictionary, LinearPowerCombinationComp,LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
 from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
 
-from pressure_comp import PressureComp
-from temperature_comp import TemperatureComp
-from density_comp import DensityComp
+from turbofan.pressure_comp import PressureComp
+from turbofan.temperature_comp import TemperatureComp
+from turbofan.density_comp import DensityComp
 
-from mach_num import Mach_Num
+from turbofan.mach_num import Mach_Num
 
 
-from zerospeed_thrust import Zerospeed_Thrust
-from mass_flow import Mass_Flow_Rate
-from specific_fuel_consum import Specific_Fuel_Consum
-from thrust_ratio import Thrust_Ratio
-from avaliable_thrust import Avaliable_Thrust
-from thottled_thrust import Thottled_Thrust
-from fuel_burn import Fuel_Burn
+from turbofan.zerospeed_thrust import Zerospeed_Thrust
+from turbofan.mass_flow import Mass_Flow_Rate
+from turbofan.specific_fuel_consum import Specific_Fuel_Consum
+from turbofan.thrust_ratio import Thrust_Ratio
+from turbofan.avaliable_thrust import Avaliable_Thrust
+from turbofan.thottled_thrust import Thottled_Thrust
+from turbofan.fuel_burn import Fuel_Burn
 
 class TurbofanGroup(Group):
    ################################ NOTE INCOMING SEALEVEL THRUST MUST BE TWICE THE AMMOUNT NEEDED TO FLY TO ADJUST FOR THOTTLE ###################

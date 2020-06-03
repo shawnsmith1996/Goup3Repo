@@ -9,6 +9,7 @@ class FuelComp(ExplicitComponent):
     def setup(self):
         self.add_input('We')
         self.add_input('Wfr')
+        self.add_input('specific_fuel_consum')
         self.add_output('Fuel')
 
         self.declare_partials('Fuel', 'We')
@@ -24,7 +25,8 @@ class FuelComp(ExplicitComponent):
     def compute_partials(self, inputs, partials):
 
         We = inputs['We']
-        SFC = inputs['SFC']
+        SFC = inputs['specific_fuel_consum']
+        Wfr = inputs['Wfr']
         
-        partials['Fuel', 'We'] = *We*6.7*0.896
+        partials['Fuel', 'We'] = Wfr*6.7*0.896
         partials['Fuel', 'Wfr'] = We*6.7*0.896

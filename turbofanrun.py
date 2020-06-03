@@ -86,6 +86,9 @@ model.add_subsystem('thottled_thrust_comp', comp, promotes=['*'])
 comp = Mass_Flow_Rate()
 model.add_subsystem('mass_flow_comp', comp, promotes=['*'])
 
+comp = Fuel_Burn()
+model.add_subsystem('fuel_burn_comp', comp, promotes=['*'])
+
 #comp = ExecComp('CD = CD0 + CDi')
 #model.add_subsystem('cd_comp', comp, promotes=['*'])
 
