@@ -1,0 +1,43 @@
+The final goal is to reach the final Drag value
+That is the thrust we will need to keep the aircraft at a steady flying state.
+To get drag, we need to get the final CD
+
+To get to coeffecient of Drag: CD we need the following:
+Already optimization given inputs:
+
+alpha
+AR
+mach number (need a velocity translation component which can be found from turbofan)
+cos sweep (sweep)
+S_ref (prob just S but unsure)
+
+
+Constants: 
+Re (reynold's num)
+
+
+
+CUrrent misisng inputs:
+
+CDo
+CLa
+CLo
+Width
+Length
+t/c
+chord length
+
+We need components that could calculate the above missing inputs perferably from the optimization given inputs. 
+
+Values that are calculated in the proccess:
+CDi
+CDv
+CDw
+CL - note important
+CD - as a final product
+
+To produce drag we need 
+sec_forces (unsure what it is)
+
+~~alpha (angle of attack)~~ satisfied
+~~ beta ~~ satisfied as it is likely sweep
