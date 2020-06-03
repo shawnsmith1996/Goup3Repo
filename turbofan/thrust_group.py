@@ -21,6 +21,7 @@ from specific_fuel_consum import Specific_Fuel_Consum
 from thrust_ratio import Thrust_Ratio
 from avaliable_thrust import Avaliable_Thrust
 from thottled_thrust import Thottled_Thrust
+from fuel_burn import Fuel_Burn
 
 class TurbofanGroup(Group):
    ################################ NOTE INCOMING SEALEVEL THRUST MUST BE TWICE THE AMMOUNT NEEDED TO FLY TO ADJUST FOR THOTTLE ###################
@@ -62,6 +63,9 @@ class TurbofanGroup(Group):
 
         comp = Mass_Flow_Rate()
         self.add_subsystem('mass_flow_comp', comp, promotes=['*'])
+
+        comp = Fuel_Burn()
+        self.add_subsystem('fuel_burn_comp', comp, promotes=['*'])
 
 
 

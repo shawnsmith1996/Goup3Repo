@@ -1,10 +1,10 @@
 import numpy as np
 from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
 
-from Cost.fl_comp import FlyawayComp
-from Cost.fuel_comp import FuelComp
-from Cost.main_comp import MainComp
-from Cost.rdte_comp import RDTEComp
+from cost.fl_comp import FlyawayComp
+from cost.fuel_comp import FuelComp
+from cost.main_comp import MainComp
+from cost.rdte_comp import RDTEComp
 
 prob = Problem()
 
@@ -13,11 +13,11 @@ model = Group()
 comp = IndepVarComp()
 comp.add_output('EN', val=500 * 2)
 comp.add_output('FTA', val=3)
-comp.add_output('Mmax', val=0.83)
+comp.add_output('mass_flow_rate', val=0.83)
 comp.add_output('Q', val=500)
 comp.add_output('Tinlet', val = 3303)
-comp.add_output('Tmax', val=74400)
-comp.add_output('V', val=466)
+comp.add_output('sealevel_thrust', val=74400)
+comp.add_output('velocity_ms', val=466)
 comp.add_output('We', val=187346)
 comp.add_output('Wfr', val=34300)
 

@@ -35,6 +35,7 @@ model = Group()
    ################################ NOTE INCOMING SEALEVEL THRUST MUST BE TWICE THE AMMOUNT NEEDED TO FLY TO ADJUST FOR THOTTLE ###################
 comp = IndepVarComp()
 comp.add_output('altitude_km', val=0.04)
+comp.add_output('drag', val=0.04)
 comp.add_output('sealevel_thrust', val=0.04)
 comp.add_output('velocity_ms', val=0.015)
 
@@ -84,6 +85,9 @@ model.add_subsystem('thottled_thrust_comp', comp, promotes=['*'])
 
 comp = Mass_Flow_Rate()
 model.add_subsystem('mass_flow_comp', comp, promotes=['*'])
+
+comp = Fuel_Burn()
+model.add_subsystem('fuel_burn_comp', comp, promotes=['*'])
 
 #comp = ExecComp('CD = CD0 + CDi')
 #model.add_subsystem('cd_comp', comp, promotes=['*'])
