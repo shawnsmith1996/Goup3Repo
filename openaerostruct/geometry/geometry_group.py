@@ -64,6 +64,7 @@ class Geometry(om.Group):
                 n_cp = len(surface['t_over_c_cp'])
                 # Add bspline components for active bspline geometric variables.        
                 x_interp = np.linspace(0., 1., int(ny-1))
+                
                 comp = self.add_subsystem('t_over_c_bsp', om.SplineComp(
                     method='bsplines', x_interp_val=x_interp,
                     num_cp=n_cp,
