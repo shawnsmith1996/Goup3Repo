@@ -24,7 +24,7 @@ class FlyawayComp(ExplicitComponent):
         self.add_output('Flyaway')
 
         self.declare_partials('Flyaway', 'We')
-        self.declare_partials('Flyaway', 'V')
+        self.declare_partials('Flyaway', 'velocity_ms')
         
 
     def compute(self, inputs, outputs):
