@@ -13,10 +13,10 @@ comp.add_input('chord',val=0.1)
 
 comp.add_output('altitude_km', val=4400)
 comp.add_output('drag', val=34400)
-comp.add_output('sealevel_thrust', val=74400)
+#comp.add_output('sealevel_thrust', val=74400)
 comp.add_output('velocity_ms', val=466)
 
-comp.add_input('gross_weight',val=187346)
+#comp.add_input('gross_weight',val=187346)
 comp.add_input('wing_area',val=17346)
 comp.add_input('horizontal_tail_area',val=17346)
 comp.add_input('bw',val=17346)

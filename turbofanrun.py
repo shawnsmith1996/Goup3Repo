@@ -37,7 +37,7 @@ model = Group()
 comp = IndepVarComp()
 comp.add_output('altitude_km', val=4400)
 comp.add_output('drag', val=34400)
-comp.add_output('sealevel_thrust', val=74400)
+comp.add_output('T_max', val=74400)
 comp.add_output('velocity_ms', val=466)
 
 
