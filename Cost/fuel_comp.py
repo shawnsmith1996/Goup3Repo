@@ -9,7 +9,7 @@ class FuelComp(ExplicitComponent):
     def setup(self):
         self.add_input('We')
         self.add_input('Wfr')
-        self.add_input('M_max')
+        #self.add_input('M_max')
         self.add_output('Fuel')
 
         self.declare_partials('Fuel', 'We')
