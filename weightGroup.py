@@ -1,39 +1,25 @@
 from openmdao.api import Group
 from openmdao.api import IndepVarComp
 
-#from Weight.wingWeight import wingWeightComp
-from Weight.tailWeight import htailWeightComp
-from Weight.tailWeight import vtailWeightComp
-from Weight.fuselageWeight import fuselageWeightComp
-from Weight.gearWeight import maingearWeightComp
-from Weight.gearWeight import nosegearWeightComp
-from Weight.hydraulicWeight import hydraulicWeightComp
-#from Weight.airconWeight import airconWeightComp
+from weights.w_weight import w_weight_comp
+from weights.t_weight import h_tailweight_comp
+from weights.t_weight import v_tailweight_comp
+from weights.f_weight import f_weight_comp
 
-class weightCompGroup(Group):
+
+class weightGroup(Group):
 
 
     def setup(self):
-#        comp = wingWeightComp(N=3.,tc=0.3,AR=9.,sweep=30.)
-#        self.add_subsystem('wingWeight',comp,promotes=['*'])
+        comp = w_weight_comp(N=3.,tc=0.3,AR=9.,sweep=30.)
+        self.add_subsystem('wing_weight',comp,promotes=['*'])
 
-        comp = htailWeightComp(N=3.,Lt=85.,ARht=4.,sweepht=27.)
-        self.add_subsystem('htailWeight',comp,promotes=['*'])
+        comp = h_tailweight_comp(N=3.,lift_tail=85.,htail_aspect_ratio=4.,sweepht=27.)
+        self.add_subsystem('h_tail_weight',comp,promotes=['*'])
 
-        comp = vtailWeightComp(N=3.,Lt=85.,ARvt=4.,sweepvt=27.,tc=0.3)
-        self.add_subsystem('vtailWeight',comp,promotes=['*'])
+        comp = v_tailweight_comp(N=3.,lift_tail=85.,vtail_aspect_ratio=4.,sweepvt=27.,tc=0.3)
+        self.add_subsystem('v_tail_weight',comp,promotes=['*'])
 
-        comp = fuselageWeightComp(N=3.,L=205.,LD=17.,Sfuse=15030.,sweep=30.,taper=0.3)
-        self.add_subsystem('fuselageWeight',comp,promotes=['*'])
+        comp = f_weight_comp(N=3.,L=205.,lift_drag=17.,fuselage_area=15030.,sweep=30.,taper=0.3)
+        self.add_subsystem('fuselage_weight',comp,promotes=['*'])
 
-        comp = maingearWeightComp(Nl=5.,Vstall=150.)
-        self.add_subsystem('maingearWeight',comp,promotes=['*'])
-
-        comp = nosegearWeightComp(Nl=5.)
-        self.add_subsystem('nosegearWeight',comp,promotes=['*'])
-
-#        comp = airconWeightComp(Np=410.,Vpr=39000.)
-#        self.add_subsystem('airconWeight',comp,promotes=['*'])
-
-        comp = hydraulicWeightComp()
-        self.add_subsystem('hydraulicWeight',comp,promotes=['*'])
