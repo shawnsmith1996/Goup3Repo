@@ -5,9 +5,9 @@ from openmdao.api import ExplicitComponent
 
 class RDTEComp(ExplicitComponent):
 
-    def initialize(self):
-        self.options.declare('Q', types=float)
-        self.options.declare('FTA', types=float)
+    #def initialize(self):
+        #self.options.declare('Q', types=float)
+        #self.options.declare('FTA', types=float)
 
     def setup(self):
         self.add_input('Q')

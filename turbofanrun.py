@@ -28,18 +28,18 @@ from turbofan.specific_fuel_consum import Specific_Fuel_Consum
 from turbofan.thrust_ratio import Thrust_Ratio
 from turbofan.avaliable_thrust import Avaliable_Thrust
 from turbofan.thottled_thrust import Thottled_Thrust
+from turbofan.fuel_burn import Fuel_Burn
 
 prob = Problem()
 
 model = Group()
    ################################ NOTE INCOMING SEALEVEL THRUST MUST BE TWICE THE AMMOUNT NEEDED TO FLY TO ADJUST FOR THOTTLE ###################
 comp = IndepVarComp()
-comp.add_output('altitude_km', val=0.04)
-comp.add_output('drag', val=0.04)
-comp.add_output('sealevel_thrust', val=0.04)
-comp.add_output('velocity_ms', val=0.015)
+comp.add_output('altitude_km', val=4400)
+comp.add_output('drag', val=34400)
+comp.add_output('sealevel_thrust', val=74400)
+comp.add_output('velocity_ms', val=466)
 
-comp.add_output('k', val=0.2)
 
 model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
@@ -47,6 +47,7 @@ model.add_subsystem('inputs_comp', comp, promotes=['*'])
 ################ Constants #############
 comp = IndepVarComp()
 
+comp.add_output('k', val=0.2)
 comp.add_output('A', val=8.)
 comp.add_output('B', val=0.2)
 comp.add_output('n', val=8.)
