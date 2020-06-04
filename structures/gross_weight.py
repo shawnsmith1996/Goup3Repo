@@ -7,7 +7,7 @@ class GrossWeight(ExplicitComponent):
         self.add_input('crew_weight')
         self.add_input('empty_weight_fraction')
         self.add_input('fuel_weight_fraction')
-        self.add_output(['gross_weight'])
+        self.add_output('gross_weight')
 
         self.declare_partials('gross_weight', 'payload_weight')
         self.declare_partials('gross_weight', 'crew_weight')
