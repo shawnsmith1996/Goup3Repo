@@ -8,8 +8,8 @@ from cost_group import CostGroup
 prob = Problem()
 
 comp = IndepVarComp()
-comp.add_input('wing_span',val=44)
-comp.add_input('chord',val=0.1)
+comp.add_output('wing_span',val=44)
+comp.add_output('chord',val=0.1)
 
 comp.add_output('altitude_km', val=4400)
 comp.add_output('drag', val=34400)
@@ -17,9 +17,9 @@ comp.add_output('drag', val=34400)
 comp.add_output('velocity_ms', val=466)
 
 #comp.add_input('gross_weight',val=187346)
-comp.add_input('wing_area',val=17346)
-comp.add_input('horizontal_tail_area',val=17346)
-comp.add_input('bw',val=17346)
+comp.add_output('wing_area',val=17346)
+comp.add_output('horizontal_tail_area',val=17346)
+comp.add_output('bw',val=17346)
 
 comp.add_output('We', val=187346)
 comp.add_output('Wfr', val=34300)
@@ -27,10 +27,10 @@ comp.add_output('Wfr', val=34300)
 prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
 comp = IndepVarComp()
-comp.add_input('payload_weight',val=4400)
-comp.add_input('crew_weight',val=4400)
-comp.add_input('empty_weight_fraction',val=0.4)
-comp.add_input('fuel_weight_fraction', val=0.5)
+comp.add_output('payload_weight',val=4400)
+comp.add_output('crew_weight',val=4400)
+comp.add_output('empty_weight_fraction',val=0.4)
+comp.add_output('fuel_weight_fraction', val=0.5)
 
 comp.add_output('A', val=8.) ## still need to fix these values #Modeling Constants
 comp.add_output('B', val=0.2)#Modeling Constants
