@@ -20,6 +20,8 @@ comp.add_output('drag', val=34400, units='kN')
 #comp.add_output('sealevel_thrust', val=74400)
 comp.add_output('velocity_ms', val=248.136,units='m/s')
 
+comp.add_input('LD',val=1) #lift over drag
+comp.add_input('R',val=700,units='NM') #range
 #comp.add_input('gross_weight',val=187346)
 comp.add_output('wing_area',val=17346,units='m**2')
 comp.add_output('horizontal_tail_area',val=17346, units='m')
