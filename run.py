@@ -22,7 +22,7 @@ comp.add_output('drag', val=34400, units='kN')
 comp.add_input('LD',val=1) #lift over drag
 comp.add_output('wing_area',val=17346,units='m**2')
 comp.add_output('horizontal_tail_area',val=17346, units='m')
-comp.add_output('bw',val=17346)
+comp.add_output('bw',val=17346)## whats this?
 prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
 
