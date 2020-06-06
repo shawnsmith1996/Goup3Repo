@@ -1,8 +1,8 @@
-  
+import numpy as np  
 from openmdao.api import ExplicitComponent
 
 
-class FuelWeightComp(ExplicitComponent):
+class FuelWeightRatio(ExplicitComponent):
 
 
 

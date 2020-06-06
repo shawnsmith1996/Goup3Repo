@@ -17,7 +17,6 @@ class Empty_Weight(ExplicitComponent):
         self.add_output('We')
 
         self.declare_partials('We', 'gross_weight')
-        self.declare_partials('We', 'Wfr')
 
     def compute(self, inputs, outputs):
         crew_weight = inputs['crew_weight']
@@ -25,9 +24,9 @@ class Empty_Weight(ExplicitComponent):
         gross_weight = inputs['gross_weight']
         Wfr = inputs['Wfr'] #fuel weight?
 
-        outputs['We'] = gross_weight-(crew_weight+payload_weight+Wfr)
+        outputs['We'] = gross_weight-(crew_weight + payload_weight + Wfr*gross_weight)
 
     def compute_partials(self, inputs, partials):
+        Wfr = inputs['Wfr']
+        partials['We', 'gross_weight'] = 1 - Wfr
 
-        partials['We', 'gross_weight'] = 1
-        partials['We', 'Wfr'] =-1

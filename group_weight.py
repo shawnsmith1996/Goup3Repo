@@ -1,6 +1,11 @@
 from openmdao.api import Group
 from openmdao.api import IndepVarComp
 
+from weights.FuelWeightRatio import FuelWeightRatio
+from weights.gross_weight import GrossWeight
+from weights.empty_weight import Empty_Weight
+
+
 from weights.w_weight import w_weight_comp
 from weights.t_weight import h_tailweight_comp
 from weights.t_weight import v_tailweight_comp
@@ -11,6 +16,18 @@ class weightGroup(Group):
 
 
     def setup(self):
+        comp = FuelWeightRatio()
+        self.add_subsystem('FuelWeightRatio',comp,promotes=['*'])
+
+        comp = GrossWeight()
+        self.add_subsystem('GrossWeight',comp,promotes=['*'])
+
+        comp = Empty_Weight()
+        self.add_subsystem('Empty_Weight',comp,promotes=['*'])
+
+
+
+
         comp = w_weight_comp(N=3.,tc=0.3,AR=9.,sweep=30.)
         self.add_subsystem('wing_weight',comp,promotes=['*'])
 

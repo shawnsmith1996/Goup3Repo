@@ -25,8 +25,6 @@ comp.add_output('wing_area',val=17346,units='m**2')
 comp.add_output('horizontal_tail_area',val=17346, units='m')
 comp.add_output('bw',val=17346)
 
-#comp.add_output('We', val=187346, units='kg')
-comp.add_output('Wfr', val=34300, units='kg')
 
 prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
@@ -35,7 +33,6 @@ comp = IndepVarComp()
 comp.add_output('payload_weight',val=4400, units='kg')
 comp.add_output('crew_weight',val=4400, units='kg')
 comp.add_output('empty_weight_fraction',val=0.4)
-comp.add_output('fuel_weight_fraction', val=0.5)
 
 comp.add_output('A', val=8.) ## still need to fix these values #Modeling Constants
 comp.add_output('B', val=0.2)#Modeling Constants
