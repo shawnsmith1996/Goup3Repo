@@ -25,7 +25,7 @@ comp.add_output('wing_area',val=17346,units='m**2')
 comp.add_output('horizontal_tail_area',val=17346, units='m')
 comp.add_output('bw',val=17346)
 
-comp.add_output('We', val=187346, units='kg')
+#comp.add_output('We', val=187346, units='kg')
 comp.add_output('Wfr', val=34300, units='kg')
 
 prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])

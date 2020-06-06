@@ -3,6 +3,7 @@ from openmdao.api import Group, ExplicitComponent
 
 from structures.aspect_ratio import AspectRatio
 from structures.gross_weight import GrossWeight
+from structures.empty_weight import Empty_Weight
 
 class StructuresGroup(Group):
 
@@ -12,3 +13,6 @@ class StructuresGroup(Group):
 
         comp = GrossWeight()
         self.add_subsystem('gross_weight', comp, promotes=['*'])
+
+        comp=Empty_Weight()
+        self.add_subsystem('empty_weight',comp, promotes=['*'])
