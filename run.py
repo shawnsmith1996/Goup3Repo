@@ -13,7 +13,7 @@ comp = IndepVarComp()
 comp.add_output('altitude_km', val=7,units='km')
 comp.add_output('velocity_ms', val=248.136,units='m/s')
 comp.add_output('chord',val=0.1, units='m')
-
+comp.add_output('wing_area',val=17346,units='m**2')
 prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
 
 
@@ -21,7 +21,6 @@ comp = IndepVarComp()
 comp.add_output('wing_span',val=44, units='m')
 comp.add_output('drag', val=34400, units='kN')
 comp.add_output('LD',val=1) #lift over drag
-comp.add_output('wing_area',val=17346,units='m**2')
 comp.add_output('horizontal_tail_area',val=17346, units='m')
 comp.add_output('bw',val=17346)## whats this?
 prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])
