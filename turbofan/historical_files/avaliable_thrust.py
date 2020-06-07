@@ -28,7 +28,7 @@ class Avaliable_Thrust(ExplicitComponent):
 #            out_name='thrust',
 #            powers_dict=dict(
 #                thrust_ratio=1.,
-#                zero_spd_thrust=1.,
+#                zerospeed_thrust=1.,
 #            ),
 #        )
 

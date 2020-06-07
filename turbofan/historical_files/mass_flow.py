@@ -27,12 +27,10 @@ class Mass_Flow_Rate(ExplicitComponent):
         mass_flow_rate_coeffecient=0.61   
         outputs['mass_flow_rate'] = (thrust * mass_flow_rate_coeffecient)
 
-
-#    def Mass_Flow_Rate(self, inputs, outputs):
 #        comp = PowerCombinationComp(
 #            shape=shape,
 #            out_name='mass_flow_rate',
-#            coeff=module['thrust_specific_fuel_consumption'],
+#            coeff=module['mass_flow_rate_coeffecient'],
 #            powers_dict=dict(
 #                thrust=1.,
 #            ),
@@ -40,7 +38,6 @@ class Mass_Flow_Rate(ExplicitComponent):
 
     def compute_partials(self, inputs, partials):
 #        mass_flow_rate_coeffecient=inputs['mass_flow_rate_coeffecient']
-        thrust=inputs['thottled_thrust']
         mass_flow_rate_coeffecient=0.61
         partials['mass_flow_rate', 'thottled_thrust'] = mass_flow_rate_coeffecient
 #        partials['mass_flow_rate', 'mass_flow_rate_coeffecient'] = thrust

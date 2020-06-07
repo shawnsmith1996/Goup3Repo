@@ -31,24 +31,9 @@ class Thottled_Thrust(ExplicitComponent):
             throttle=(drag)/(avaliable_thrust)
 
         outputs['thottled_thrust'] = (throttle * avaliable_thrust)
-    
-    
-#    def Thrust(self, inputs, outputs):
-#        comp = PowerCombinationComp(
-#            shape=shape,
-#            out_name='zero_spd_thrust',
-#            powers_dict=dict(
-#                throttle=1.,
-#                available_thrust=1.,
-#            ),
-#        )
 
     def compute_partials(self, inputs, partials):
-# thottled_thrust = 0.5*(drag)
-# if 0.5*drag > avaliable_thrust:
-# thottled_thrust = avaliable_thrust
-# if 0(avaliable_thrust < 0) or (drag < 0):
-# thottled_thrust = 0
+
         drag=inputs['drag']
         avaliable_thrust=inputs['avaliable_thrust']
         if drag > avaliable_thrust:
