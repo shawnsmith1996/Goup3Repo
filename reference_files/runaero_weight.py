@@ -5,7 +5,7 @@ import openmdao.api as om
 from openaerostruct.geometry.utils import generate_mesh
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
-from weights.weightGroup import weightGroup
+
 
 # Create a dictionary to store options about the mesh
 mesh_dict = {'num_y' : 9,
@@ -68,9 +68,6 @@ prob.model.add_subsystem('prob_vars',
     indep_var_comp,
     promotes=['*'])
 
-group = weightGroup()
-prob.model.add_subsystem('weight_group', group, promotes=['*'])
-
 # Create and add a group that handles the geometry for the
 # aerodynamic lifting surface
 geom_group = Geometry(surface=surface)
@@ -113,4 +110,7 @@ prob.model.add_objective(point_name + '.wing_perf.CD', scaler=1e4)
 prob.setup()
 # prob.check_partials(compact_print=True)
 # exit()
+
 prob.run_driver()
+prob.model.list_inputs(prom_name=True)
+prob.model.list_outputs(prom_name=True)

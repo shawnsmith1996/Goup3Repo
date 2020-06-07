@@ -8,64 +8,63 @@ import numpy as np
 from lsdo_utils.api import OptionsDictionary, LinearPowerCombinationComp,LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
 from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
 
-from turbofan.pressure_comp import PressureComp
-from turbofan.temperature_comp import TemperatureComp
-from turbofan.density_comp import DensityComp
-
-from turbofan.mach_num import Mach_Num
-
-
-from turbofan.zerospeed_thrust import Zerospeed_Thrust
-from turbofan.mass_flow import Mass_Flow_Rate
 from turbofan.specific_fuel_consum import Specific_Fuel_Consum
 from turbofan.thrust_ratio import Thrust_Ratio
-from turbofan.avaliable_thrust import Avaliable_Thrust
 from turbofan.thottled_thrust import Thottled_Thrust
 from turbofan.fuel_burn import Fuel_Burn
 
 class TurbofanGroup(Group):
+    def initialize(self):
+        self.options.declare('shape', types=tuple)
    ################################ NOTE INCOMING SEALEVEL THRUST MUST BE TWICE THE AMMOUNT NEEDED TO FLY TO ADJUST FOR THOTTLE ###################
     def setup(self):
-
+        shape = self.options['shape']
         #computations below: 
-        
-        #### Atmosphere Comp
-        comp = PressureComp()
-        self.add_subsystem('pressure_comp', comp, promotes=['*'])
 
-        comp = TemperatureComp()
-        self.add_subsystem('temperature_comp', comp, promotes=['*'])
-
-        comp = DensityComp() 
-        self.add_subsystem('density_comp', comp, promotes=['*'])
-        ## Atmosphere above
-
-        # Mach Num Comp
-        comp= Mach_Num()
-        self.add_subsystem('mach_comp', comp, promotes=['*'])
-        ## Mach num calc above
 
         #### Thrust Compcomp = Zerospeed_Thrust()
-        comp = Zerospeed_Thrust()
+        sealv_dens=1.225
+        comp = PowerCombinationComp(
+            shape=shape,
+            coeff=1/sealv_dens,
+            out_name='zerospeed_thrust',
+            powers_dict=dict(
+                T_max=1.,
+                density=1.,
+            )
+        )
         self.add_subsystem('zerospeed_thrust_comp', comp, promotes=['*'])
 
-        comp = Specific_Fuel_Consum()
+        comp=Specific_Fuel_Consum()
         self.add_subsystem('specific_fuel_consum_comp', comp, promotes=['*'])
 
-        comp = Thrust_Ratio()
+        comp=Thrust_Ratio()
         self.add_subsystem('thrust_ratio_comp', comp, promotes=['*'])
 
-        comp = Avaliable_Thrust()
+        comp = PowerCombinationComp(
+            shape=shape,
+            out_name='avaliable_thrust',
+            powers_dict=dict(
+                thrust_ratio=1.,
+                zerospeed_thrust=1.,
+            ),
+        )
         self.add_subsystem('avaliable_thrust', comp, promotes=['*'])
 
-        comp = Thottled_Thrust()
+        comp=Thottled_Thrust()
         self.add_subsystem('thottled_thrust_comp', comp, promotes=['*'])
 
-        comp = Mass_Flow_Rate()
+        mass_flow_rate_coeffecient=0.61   
+        comp = PowerCombinationComp(
+            shape=shape,
+            out_name='mass_flow_rate',
+            coeff=mass_flow_rate_coeffecient,
+            powers_dict=dict(
+                thrust=1.,
+            ),
+        )
         self.add_subsystem('mass_flow_comp', comp, promotes=['*'])
 
-        comp = Fuel_Burn()
-        self.add_subsystem('fuel_burn_comp', comp, promotes=['*'])
 
 
 
