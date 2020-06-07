@@ -2,7 +2,7 @@ from __future__ import print_function
 import numpy as np
 
 from lsdo_utils.api import ArrayExplicitComponent
-from .atmosph_utils import \
+from aerodynamics.atmosph_utils import \
     get_mask_arrays, compute_temps, compute_temp_derivs
 
 

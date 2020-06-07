@@ -8,17 +8,10 @@ import numpy as np
 from lsdo_utils.api import OptionsDictionary, LinearPowerCombinationComp,LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
 from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
 
-
-
-from .pressure_comp import PressureComp
-from .temperature_comp import TemperatureComp
-from .density_comp import DensityComp
-
-
-from .specific_fuel_consum import Specific_Fuel_Consum
-from .thrust_ratio import Thrust_Ratio
-from .thottled_thrust import Thottled_Thrust
-from .fuel_burn import Fuel_Burn
+from turbofan.specific_fuel_consum import Specific_Fuel_Consum
+from turbofan.thrust_ratio import Thrust_Ratio
+from turbofan.thottled_thrust import Thottled_Thrust
+from turbofan.fuel_burn import Fuel_Burn
 
 class TurbofanGroup(Group):
     def initialize(self):
@@ -27,32 +20,7 @@ class TurbofanGroup(Group):
     def setup(self):
         shape = self.options['shape']
         #computations below: 
-        
-        #### Atmosphere Comp
-        comp = PressureComp()
-        self.add_subsystem('pressure_comp', comp, promotes=['*'])
 
-        comp = TemperatureComp()
-        self.add_subsystem('temperature_comp', comp, promotes=['*'])
-
-        comp = DensityComp() 
-        self.add_subsystem('density_comp', comp, promotes=['*'])
-        ## Atmosphere above
-
-        # Mach Num Comp
-        R=287.058
-        gamma=1.4
-        comp = PowerCombinationComp(#
-            shape=shape,
-            coeff=1/np.sqrt(gamma*R),
-            out_name='M_inf',
-            powers_dict=dict(
-                velocity_ms=1.,
-                temperature=-0.5,
-            )
-        )
-        self.add_subsystem('mach_comp', comp, promotes=['*'])
-        ## Mach num calc above
 
         #### Thrust Compcomp = Zerospeed_Thrust()
         sealv_dens=1.225

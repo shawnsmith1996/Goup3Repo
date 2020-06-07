@@ -2,7 +2,7 @@ from __future__ import print_function
 import numpy as np
 
 from lsdo_utils.api import ArrayExplicitComponent
-from .constants import R
+from aerodynamics.constants import R
 
 
 class DensityComp(ArrayExplicitComponent):
