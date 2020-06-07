@@ -8,28 +8,26 @@ from group_weight import weightGroup
 from group_cost import CostGroup
 
 prob = Problem()
-
 comp = IndepVarComp()
-
-
-comp.add_output('wing_span',val=44, units='m')
+comp.add_output('altitude_km', val=4400,units='m')
+comp.add_output('velocity_ms', val=248.136,units='m/s')
 comp.add_output('chord',val=0.1, units='m')
 
-comp.add_output('altitude_km', val=4400,units='m')
-comp.add_output('drag', val=34400, units='kN')
-#comp.add_output('sealevel_thrust', val=74400)
-comp.add_output('velocity_ms', val=248.136,units='m/s')
+prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
 
-#comp.add_input('gross_weight',val=187346)
+
+comp = IndepVarComp()
+comp.add_output('wing_span',val=44, units='m')
+comp.add_output('drag', val=34400, units='kN')
+comp.add_input('LD',val=1) #lift over drag
 comp.add_output('wing_area',val=17346,units='m**2')
 comp.add_output('horizontal_tail_area',val=17346, units='m')
-comp.add_output('bw',val=17346)
-
-
+comp.add_output('bw',val=17346)## whats this?
 prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
 
 comp = IndepVarComp()
+comp.add_input('R',val=700,units='NM') #range
 comp.add_output('payload_weight',val=4400, units='kg')
 comp.add_output('crew_weight',val=4400, units='kg')
 comp.add_output('empty_weight_fraction',val=0.4)
