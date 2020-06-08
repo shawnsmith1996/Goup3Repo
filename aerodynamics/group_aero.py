@@ -104,7 +104,7 @@ class AeroGroup(Group):
             shape=shape,
             out_name='Lift',
             powers_dict=dict(
-                D = 1.,
+                drag = 1.,
                 LD = 1
             )
         )

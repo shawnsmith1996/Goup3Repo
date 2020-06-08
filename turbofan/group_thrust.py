@@ -60,7 +60,7 @@ class TurbofanGroup(Group):
             out_name='mass_flow_rate',
             coeff=mass_flow_rate_coeffecient,
             powers_dict=dict(
-                thrust=1.,
+                thottled_thrust=1.,
             ),
         )
         self.add_subsystem('mass_flow_comp', comp, promotes=['*'])
