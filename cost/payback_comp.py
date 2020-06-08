@@ -3,7 +3,7 @@ from openmdao.api import ExplicitComponent
 
 
 class PaybackperiodComp(ExplicitComponent):
-def setup(self):
+    def setup(self):
         #constant production plan in 10 years (1600)
         self.add_input('large_production_quentity')
         
@@ -38,7 +38,7 @@ def setup(self):
         self.declare_partials('Paybackperiod_year', 'Fuel')
         self.declare_partials('Paybackperiod_year', 'Main')
         
- def compute(self, inputs, outputs):
+    def compute(self, inputs, outputs):
   
         LQ = inputs['large_production_quentity']
         LC = inputs['learning_curve']
