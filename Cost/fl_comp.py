@@ -13,7 +13,7 @@ class FlyawayComp(ExplicitComponent):
 
     def setup(self):
         self.add_input('We')
-        self.add_input('velocity_ms')
+        self.add_input('speed')
 
         self.add_input('Q')
         self.add_input('Tinlet')
@@ -24,7 +24,7 @@ class FlyawayComp(ExplicitComponent):
         self.add_output('Flyaway')
 
         self.declare_partials('Flyaway', 'We')
-        self.declare_partials('Flyaway', 'velocity_ms')
+        self.declare_partials('Flyaway', 'speed')
         
 
     def compute(self, inputs, outputs):
@@ -37,7 +37,7 @@ class FlyawayComp(ExplicitComponent):
         Tinlet=inputs['Tinlet']
         Q = inputs['Q']
         We = inputs['We']
-        V = inputs['velocity_ms']
+        V = inputs['speed']
         Tmax = inputs['T_max']
         Mmax = inputs['M_max']
 
@@ -53,10 +53,10 @@ class FlyawayComp(ExplicitComponent):
         #Tinlet=inputs['Tinlet']
         Q = inputs['Q']
         We = inputs['We']
-        V = inputs['velocity_ms']
+        V = inputs['speed']
         #Tmax = inputs['T_max']
         #Mmax = inputs['M_max']
         
 
         partials['Flyaway', 'We'] =25.4426*Q**0.799/Q*V**0.621/We**0.079+914.321*Q**0.641/Q*V**0.484/We**0.18 
-        partials['Flyaway', 'velocity_ms'] = 17.1551*Q**0.799/Q*We**0.921/V**0.379+539.672*Q**0.641/Q*We**0.82/V**0.516
+        partials['Flyaway', 'speed'] = 17.1551*Q**0.799/Q*We**0.921/V**0.379+539.672*Q**0.641/Q*We**0.82/V**0.516
