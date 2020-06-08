@@ -8,6 +8,8 @@ import numpy as np
 from lsdo_utils.api import OptionsDictionary, LinearPowerCombinationComp,LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
 from openmdao.api import Problem, Group, IndepVarComp, ExecComp, ScipyOptimizeDriver
 
+
+
 from turbofan.specific_fuel_consum import Specific_Fuel_Consum
 from turbofan.thrust_ratio import Thrust_Ratio
 from turbofan.thottled_thrust import Thottled_Thrust
@@ -20,7 +22,18 @@ class TurbofanGroup(Group):
     def setup(self):
         shape = self.options['shape']
         #computations below: 
-
+        R=287.058
+        gamma=1.4
+        comp = PowerCombinationComp(#
+            shape=shape,
+            coeff=1/np.sqrt(gamma*R),
+            out_name='M_inf',
+            powers_dict=dict(
+                speed=1.,
+                temperature=-0.5,
+            )
+        )
+        self.add_subsystem('mach_comp', comp, promotes=['*'])
 
         #### Thrust Compcomp = Zerospeed_Thrust()
         sealv_dens=1.225

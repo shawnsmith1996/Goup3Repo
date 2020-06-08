@@ -6,6 +6,7 @@ from cost.fuel_comp import FuelComp
 from cost.main_comp import MainComp
 from cost.rdte_comp import RDTEComp
 from cost.mtow_comp import MTOWComp
+from cost.payback_comp import PaybackperiodComp
 
 class CostGroup(Group):
     
@@ -24,3 +25,6 @@ class CostGroup(Group):
         
         comp = MTOWComp()
         self.add_subsystem('mtow_comp', comp, promotes=['*'])
+
+        comp=PaybackperiodComp()
+        self.add_subsystem('payback_period', comp, promotes=['*'])
