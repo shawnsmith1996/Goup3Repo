@@ -33,7 +33,7 @@ prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])
 
 
 comp = IndepVarComp()
-comp.add_input('critical_mach_number',val=0.85)
+comp.add_output('critical_mach_number',val=0.85)
 
 comp.add_output('R',val=700,units='NM') #range
 comp.add_output('payload_weight',val=4400, units='kg')
