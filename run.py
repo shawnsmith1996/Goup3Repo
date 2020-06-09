@@ -66,9 +66,6 @@ prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
 
 
 comp = IndepVarComp()
-comp.add_output('wetted_area',val= 427.8 * 2.1,units='m**2') 
-comp.add_output('characteristic_length',val=7,units='m') 
-
 comp.add_output('large_production_quentity',val=1600)#constant production plan in 10 years (1600)
 comp.add_output('learning_curve',val=0.8)        #constant learning curve effect 60%~95%
 comp.add_output('mission_year',val=100)    #constant missions per year
@@ -98,7 +95,7 @@ comp.add_output('Tinlet', val = 3303, units='K') ## Turbine inlet temperature
 prob.model.add_subsystem('constants', comp, promotes=['*'])
 
 aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
-prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
+prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['drag_coeff','lift_to_drag_ratio'])
 
 group = AeroGroup(shape=shape)
 prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
