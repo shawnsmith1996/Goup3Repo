@@ -11,10 +11,10 @@ class TemperatureComp(ArrayExplicitComponent):
     def setup(self):
         self.add_input('altitude')
         self.add_output('temperature')
-        self.declare_partials('temperature', 'altitude_km')
+        self.declare_partials('temperature', 'altitude')
 
     def compute(self, inputs, outputs):
-        h_m = inputs['altitude_km'] * 1e3
+        h_m = inputs['altitude'] * 1e3
 
         self.mask_arrays = get_mask_arrays(h_m)
 
@@ -23,7 +23,7 @@ class TemperatureComp(ArrayExplicitComponent):
         outputs['temperature'] = temp_K
 
     def compute_partials(self, inputs, partials):
-        h_m = inputs['altitude_km'] * 1e3
+        h_m = inputs['altitude'] * 1e3
         derivs = compute_temp_derivs(h_m, *self.mask_arrays).flatten()
 
-        partials['temperature', 'altitude_km'] = derivs * 1e3
+        partials['temperature', 'altitude'] = derivs * 1e3
