@@ -97,8 +97,8 @@ comp.add_output('Tinlet', val = 3303, units='K') ## Turbine inlet temperature
 
 prob.model.add_subsystem('constants', comp, promotes=['*'])
 
-aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
-prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
+#aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
+#prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
 
 group = AeroGroup(shape=shape)
 prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
@@ -114,24 +114,24 @@ group = weight_cost()
 #prob.driver.options['disp'] = True
 
 prob.setup(check=True)
-prob['wing_geometry_group.area'] = 427.8
-prob['wing_geometry_group.wetted_area'] = 427.8 * 2.1
-prob['wing_geometry_group.characteristic_length'] = 7.
-prob['wing_geometry_group.sweep'] = 31.6 * np.pi / 180.
-prob['wing_geometry_group.incidence_angle'] = 0.
-prob['wing_geometry_group.aspect_ratio'] = 8.68
-prob['wing_geometry_group.mac'] = 7.
+#prob['wing_geometry_group.area'] = 427.8
+#prob['wing_geometry_group.wetted_area'] = 427.8 * 2.1
+#prob['wing_geometry_group.characteristic_length'] = 7.
+#prob['wing_geometry_group.sweep'] = 31.6 * np.pi / 180.
+#prob['wing_geometry_group.incidence_angle'] = 0.
+#prob['wing_geometry_group.aspect_ratio'] = 8.68
+#prob['wing_geometry_group.mac'] = 7.
 
-prob['tail_geometry_group.area'] = 101.3
-prob['tail_geometry_group.wetted_area'] = 101.3 * 2.1
-prob['tail_geometry_group.characteristic_length'] = 5.
-prob['tail_geometry_group.sweep'] = 35. * np.pi / 180.
-prob['tail_geometry_group.incidence_angle'] = 0.
-prob['tail_geometry_group.aspect_ratio'] = 4.5
-prob['tail_geometry_group.mac'] = 5.
+#prob['tail_geometry_group.area'] = 101.3
+#prob['tail_geometry_group.wetted_area'] = 101.3 * 2.1
+#prob['tail_geometry_group.characteristic_length'] = 5.
+#prob['tail_geometry_group.sweep'] = 35. * np.pi / 180.
+#prob['tail_geometry_group.incidence_angle'] = 0.
+#prob['tail_geometry_group.aspect_ratio'] = 4.5
+#prob['tail_geometry_group.mac'] = 5.
 
-prob['fuselage_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
-prob['fuselage_geometry_group.characteristic_length'] = 73.
+#prob['fuselage_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
+#prob['fuselage_geometry_group.characteristic_length'] = 73.
 prob.run_model()
 prob.model.list_outputs(prom_name=True)
 #prob.run_driver()
