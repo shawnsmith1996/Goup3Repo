@@ -62,6 +62,9 @@ comp.add_output('altitude', val=11., shape=shape)
 comp.add_output('ref_mac', val=7., shape=shape, units='m') ### Mean Chord
 comp.add_output('alpha', val=3. * np.pi / 180., shape=shape)
 comp.add_output('ref_area', val=427.8, shape=shape)
+
+comp.add_output('drag_coeff', val=0.021, shape=shape)
+comp.add_output('lift_to_drag_ratio', val=14.5, shape=shape)
 prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
 
 
@@ -95,7 +98,7 @@ comp.add_output('Tinlet', val = 3303, units='K') ## Turbine inlet temperature
 prob.model.add_subsystem('constants', comp, promotes=['*'])
 
 aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
-prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['drag_coeff','lift_to_drag_ratio'])
+prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
 
 group = AeroGroup(shape=shape)
 prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
