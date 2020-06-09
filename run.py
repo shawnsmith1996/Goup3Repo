@@ -56,9 +56,8 @@ aircraft = Aircraft(
 
 prob = Problem()
 comp = IndepVarComp()
-#comp.add_output('altitude_km', val=7,units='km')
-comp.add_output('speed', val=250., shape=shape,units='m/s')
-comp.add_output('altitude', val=11., shape=shape)
+comp.add_output('speed', val=250., shape=shape) # units='m/s'
+comp.add_output('altitude', val=11., shape=shape) # units = 'km'
 comp.add_output('ref_mac', val=7., shape=shape, units='m') ### Mean Chord
 comp.add_output('alpha', val=3. * np.pi / 180., shape=shape)
 comp.add_output('ref_area', val=427.8, shape=shape)
@@ -97,8 +96,12 @@ comp.add_output('Tinlet', val = 3303, units='K') ## Turbine inlet temperature
 
 prob.model.add_subsystem('constants', comp, promotes=['*'])
 
+
+########## Leave below commented ###########
 #aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
 #prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
+########## Leave above commented ###########
+
 
 group = AeroGroup(shape=shape)
 prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
@@ -114,6 +117,9 @@ group = weight_cost()
 #prob.driver.options['disp'] = True
 
 prob.setup(check=True)
+
+
+########## Leave below commented ###########
 #prob['wing_geometry_group.area'] = 427.8
 #prob['wing_geometry_group.wetted_area'] = 427.8 * 2.1
 #prob['wing_geometry_group.characteristic_length'] = 7.
@@ -132,6 +138,8 @@ prob.setup(check=True)
 
 #prob['fuselage_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
 #prob['fuselage_geometry_group.characteristic_length'] = 73.
+########## Leave above commented ###########
+
 prob.run_model()
 prob.model.list_outputs(prom_name=True)
 #prob.run_driver()
