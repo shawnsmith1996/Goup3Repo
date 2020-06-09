@@ -8,21 +8,22 @@ from turbofan.atmosphere.density_comp import DensityComp
 class AeroGroup(Group):
     def initialize(self):
         self.options.declare('shape', types=tuple)
-
+        self.options.declare('name', types=str)
+        
     def setup(self):
         shape = self.options['shape']
 
 
 
 ## Need CDv CD0 CL0 CLa 
-        comp = PressureComp()
-        self.add_subsystem('pressure_comp', comp, promotes=['*'])
+#comp = PressureComp()
+ #self.add_subsystem('pressure_comp', comp, promotes=['*'])
 
-        comp = TemperatureComp()
-        self.add_subsystem('temperature_comp', comp, promotes=['*'])
+#comp = TemperatureComp()
+#self.add_subsystem('temperature_comp', comp, promotes=['*'])
 
-        comp = DensityComp() 
-        self.add_subsystem('density_comp', comp, promotes=['*'])
+#comp = DensityComp() 
+#self.add_subsystem('density_comp', comp, promotes=['*'])
 
 
         comp = PowerCombinationComp(

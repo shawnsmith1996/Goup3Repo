@@ -1,6 +1,9 @@
 import numpy as np
 import openmdao.api as om
 from openmdao.api import Problem, IndepVarComp, ScipyOptimizeDriver
+from powertrain.powertrain import Powertrain
+from powertrain.powertrain_group import PowertrainGroup
+
 
 from aircraft import Aircraft
 from aircraft_group import AircraftGroup
@@ -52,18 +55,34 @@ aircraft = Aircraft(
     analyses=analyses,
     aircraft_type='transport',
 )
+aerodynamics_name='aerodynamics'
+final_aero_name='final_aero'
+
+powertrain=Powertrain()
+
+powertrain.add_module(Aerodynamics(
+    name=aerodynamics_name,
+))
+powertrain.add_module(AeroGroup(
+    name=final_aero_name,
+))
+
+powertrain.add_link(
+    aerodynamics_name, ['drag_coeff','lift_to_drag_ratio'],
+    final_aero_name, ['drag_coeff','lift_to_drag_ratio'],
+)
 
 
 prob = Problem()
 comp = IndepVarComp()
 comp.add_output('speed', val=250., shape=shape) # units='m/s'
-comp.add_output('altitude', val=11., shape=shape) # units = 'km'
+comp.add_output('altitude', val=7., shape=shape) # units = 'km'
 comp.add_output('ref_mac', val=7., shape=shape, units='m') ### Mean Chord
 comp.add_output('alpha', val=3. * np.pi / 180., shape=shape)
 comp.add_output('ref_area', val=427.8, shape=shape)
 
-comp.add_output('drag_coeff', val=0.021, shape=shape)
-comp.add_output('lift_to_drag_ratio', val=14.5, shape=shape)
+#comp.add_output('drag_coeff', val=0.021, shape=shape)
+#comp.add_output('lift_to_drag_ratio', val=14.5, shape=shape)
 prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
 
 
@@ -75,19 +94,25 @@ comp.add_output('mission_year',val=100)    #constant missions per year
 comp.add_output('passenger',val=400)
 comp.add_output('ticket_price',val=150)
 
-comp.add_output('R',val=700,units='NM') #range
-comp.add_output('payload_weight',val=4400, units='kg')
-comp.add_output('crew_weight',val=4400, units='kg')
+#fix these?
+comp.add_output('R',val=1300,units='km') #range
+comp.add_output('payload_weight',val=44000, units='kg')
+comp.add_output('crew_weight',val=1100, units='kg')
 #comp.add_output('empty_weight_fraction',val=0.4)
 
-comp.add_output('A', val=8.) ## still need to fix these values #Modeling Constants
-comp.add_output('B', val=0.2)#Modeling Constants
-comp.add_output('n', val=8.)#Modeling Constants
-comp.add_output('k', val=0.2) #Modeling Constants
+## fix these 
+comp.add_output('A', val=0.222) ## still need to fix these values #Modeling Constants
+#comp.add_output('B', val=0.7)#Modeling Constants
+comp.add_output('n', val=-0.6)#Modeling Constants
+#comp.add_output('k', val=-0.00001) #Modeling Constants
+
+
+## Below prob okay
+comp.add_output('specific_fuel_consum', val=17.1, units= 'g/(kN*s)') #dependent on engine
 
 comp.add_output('MHFH', val=10) ## Maintaince Hour Per Flight Hour
 comp.add_output('M_max', val=0.83) ## Engine max mach number
-comp.add_output('T_max', val=7440, units='kN') ## Engine max Thrust
+comp.add_output('T_max', val=106802, units='N') ## Engine max Thrust
 comp.add_output('EN', val=500 * 2) ## Engine Number
 comp.add_output('FH', val=3500, units='h') ###flight hour
 comp.add_output('FTA', val=3) ###FTA flight test
@@ -98,13 +123,13 @@ prob.model.add_subsystem('constants', comp, promotes=['*'])
 
 
 ########## Leave below commented ###########
-#aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
-#prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
+aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
+prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
 ########## Leave above commented ###########
 
 
-group = AeroGroup(shape=shape)
-prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
+#group = AeroGroup(shape=shape)
+#prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
 
 group = TurbofanGroup(shape=shape)
 prob.model.add_subsystem('propulsion_group', group, promotes=['*'])
@@ -120,24 +145,27 @@ prob.setup(check=True)
 
 
 ########## Leave below commented ###########
-#prob['wing_geometry_group.area'] = 427.8
-#prob['wing_geometry_group.wetted_area'] = 427.8 * 2.1
-#prob['wing_geometry_group.characteristic_length'] = 7.
-#prob['wing_geometry_group.sweep'] = 31.6 * np.pi / 180.
-#prob['wing_geometry_group.incidence_angle'] = 0.
-#prob['wing_geometry_group.aspect_ratio'] = 8.68
-#prob['wing_geometry_group.mac'] = 7.
+prob['wing_geometry_group.area'] = 427.8
+prob['wing_geometry_group.wetted_area'] = 427.8 * 2.1
+prob['wing_geometry_group.characteristic_length'] = 7.
+prob['wing_geometry_group.sweep'] = 31.6 * np.pi / 180.
+prob['wing_geometry_group.incidence_angle'] = 0.
+prob['wing_geometry_group.aspect_ratio'] = 8.68
+prob['wing_geometry_group.mac'] = 7.
 
-#prob['tail_geometry_group.area'] = 101.3
-#prob['tail_geometry_group.wetted_area'] = 101.3 * 2.1
-#prob['tail_geometry_group.characteristic_length'] = 5.
-#prob['tail_geometry_group.sweep'] = 35. * np.pi / 180.
-#prob['tail_geometry_group.incidence_angle'] = 0.
-#prob['tail_geometry_group.aspect_ratio'] = 4.5
-#prob['tail_geometry_group.mac'] = 5.
+prob['tail_geometry_group.area'] = 101.3
+prob['tail_geometry_group.wetted_area'] = 101.3 * 2.1
+prob['tail_geometry_group.characteristic_length'] = 5.
+prob['tail_geometry_group.sweep'] = 35. * np.pi / 180.
+prob['tail_geometry_group.incidence_angle'] = 0.
+prob['tail_geometry_group.aspect_ratio'] = 4.5
+prob['tail_geometry_group.mac'] = 5.
 
-#prob['fuselage_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
-#prob['fuselage_geometry_group.characteristic_length'] = 73.
+prob['fuselage_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
+prob['fuselage_geometry_group.characteristic_length'] = 73.
+
+#prob['balance_group.wetted_area'] = 73 * 2 * np.pi * 3.1
+#prob['balance_group.characteristic_length'] = 73.
 ########## Leave above commented ###########
 
 prob.run_model()

@@ -48,8 +48,8 @@ class TurbofanGroup(Group):
         )
         self.add_subsystem('zerospeed_thrust_comp', comp, promotes=['*'])
 
-        comp=Specific_Fuel_Consum()
-        self.add_subsystem('specific_fuel_consum_comp', comp, promotes=['*'])
+#        comp=Specific_Fuel_Consum()
+#        self.add_subsystem('specific_fuel_consum_comp', comp, promotes=['*'])
 
         comp=Thrust_Ratio()
         self.add_subsystem('thrust_ratio_comp', comp, promotes=['*'])
