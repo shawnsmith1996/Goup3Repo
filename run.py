@@ -12,7 +12,7 @@ from analyses.analyses import Analyses
 from aerodynamics.aerodynamics import Aerodynamics
 
 
-
+from group_aero import AeroGroup
 from turbofan.group_thrust import TurbofanGroup
 from weights.group_weight import weightGroup
 from cost.group_cost import CostGroup
@@ -59,22 +59,16 @@ comp = IndepVarComp()
 #comp.add_output('altitude_km', val=7,units='km')
 comp.add_output('speed', val=250., shape=shape,units='m/s')
 comp.add_output('altitude', val=11., shape=shape)
-comp.add_output('mean_chord',val=1, units='m')
+comp.add_output('ref_mac', val=7., shape=shape, units='m') ### Mean Chord
 comp.add_output('alpha', val=3. * np.pi / 180., shape=shape)
-comp.add_output('wing_area',val=427.8,units='m**2')
-comp.add_output('wing_span',val=44, units='m')
+comp.add_output('ref_area', val=427.8, shape=shape)
 prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
 
 
 comp = IndepVarComp()
-comp.add_output('ref_area', val=427.8, shape=shape)
-comp.add_output('ref_mac', val=7., shape=shape)
-comp.add_output('drag',val=44000, units='kN')
+comp.add_output('wetted_area',val= 427.8 * 2.1,units='m**2') 
+comp.add_output('characteristic_length',val=7,units='m') 
 
-prob.model.add_subsystem('inputs_comp', comp, promotes=['*'])
-
-
-comp = IndepVarComp()
 comp.add_output('large_production_quentity',val=1600)#constant production plan in 10 years (1600)
 comp.add_output('learning_curve',val=0.8)        #constant learning curve effect 60%~95%
 comp.add_output('mission_year',val=100)    #constant missions per year
@@ -105,6 +99,9 @@ prob.model.add_subsystem('constants', comp, promotes=['*'])
 
 aircraft_group = AircraftGroup(shape=shape, aircraft=aircraft)
 prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
+
+group = AeroGroup(shape=shape)
+prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
 
 group = TurbofanGroup(shape=shape)
 prob.model.add_subsystem('propulsion_group', group, promotes=['*'])
