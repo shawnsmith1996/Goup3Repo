@@ -15,7 +15,7 @@ from aerodynamics.aerodynamics import Aerodynamics
 from group_aero import AeroGroup
 from turbofan.group_thrust import TurbofanGroup
 from weights.group_weight import weightGroup
-from cost.group_cost import CostGroup
+from Cost.group_cost import CostGroup
 from group_weight_cost import weight_cost
 
 
