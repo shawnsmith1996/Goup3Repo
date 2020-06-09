@@ -11,7 +11,7 @@ class RDTEComp(ExplicitComponent):
 
     def setup(self):
         self.add_input('Q')
-        self.add_input('FTA')
+        #self.add_input('FTA')
         self.add_input('We')
         self.add_input('speed')
         self.add_output('RDTE')
@@ -21,18 +21,18 @@ class RDTEComp(ExplicitComponent):
 
     def compute(self, inputs, outputs):
         Q = inputs['Q']
-        FTA = inputs['FTA']
+        #FTA = inputs['FTA']
         We = inputs['We']
         V = inputs['speed']
 
-        outputs['RDTE'] = 2498*We**0.325*V**0.282*FTA**1.21 + 91.3*We**0.63*V**1.3 + 4.86*We**0.777*V**0.894*Q**0.163*115 + 5.99*We**0.777*V**0.696*Q**0.263*118
+        outputs['RDTE'] = 2498*We**0.325*(V*1.94384)**0.282*(4)**1.21 + 91.3*We**0.63*(V*1.94384)**1.3 + 4.86*We**0.777*(V*1.94384)**0.894*Q**0.163*115 + 5.99*We**0.777*(V*1.94384)**0.696*Q**0.263*118
 
     def compute_partials(self, inputs, partials):
         Q = inputs['Q']
-        FTA = inputs['FTA']
+        #FTA = inputs['FTA']
 
         We = inputs['We']
         V = inputs['speed']
 
-        partials['RDTE', 'We'] = 811.85*FTA**1.21*V**0.282/We**0.675+549.199*Q**0.263*V**0.696/We**0.223+434.265*Q**0.163*V**0.894/We**0.223+57.519*V**1.3/We**0.37
-        partials['RDTE', 'speed'] =  704.436*FTA**1.21*We**0.325/V**0.718+491.947*Q**0.263*We**0.777/V**0.304+499.657*Q**0.163*We**0.777/V**0.106+118.69*V**0.3*We**0.63
+        partials['RDTE', 'We'] = 811.85*(4)**1.21*(V*1.94384)**0.282/We**0.675+549.199*Q**0.263*(V*1.94384)**0.696/We**0.223+434.265*Q**0.163*(V*1.94384)**0.894/We**0.223+57.519*(V*1.94384)**1.3/We**0.37
+        partials['RDTE', 'speed'] =  704.436*(4)**1.21*We**0.325/(V*1.94384)**0.718+491.947*Q**0.263*We**0.777/(V*1.94384)**0.304+499.657*Q**0.163*We**0.777/(V*1.94384)**0.106+118.69*(V*1.94384)**0.3*We**0.63
