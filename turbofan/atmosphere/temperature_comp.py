@@ -9,7 +9,7 @@ from turbofan.atmosphere.atmosph_utils import \
 class TemperatureComp(ArrayExplicitComponent):
 
     def setup(self):
-        self.add_input('altitude_km')
+        self.add_input('altitude')
         self.add_output('temperature')
         self.declare_partials('temperature', 'altitude_km')
 

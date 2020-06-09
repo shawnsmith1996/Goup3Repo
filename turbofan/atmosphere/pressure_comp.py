@@ -9,7 +9,7 @@ from turbofan.atmosphere.atmosph_utils import \
 class PressureComp(ArrayExplicitComponent):
 
     def setup(self):
-        self.add_input('altitude_km')
+        self.add_input('altitude')
         self.add_output('pressure_MPa')
         self.declare_partials('pressure_MPa', 'altitude_km')
         
