@@ -1,7 +1,9 @@
 import numpy as np
 from openmdao.api import Group, ExplicitComponent
 from lsdo_utils.api import OptionsDictionary, LinearPowerCombinationComp,LinearCombinationComp, PowerCombinationComp, GeneralOperationComp, ElementwiseMinComp
-
+from turbofan.atmosphere.pressure_comp import PressureComp
+from turbofan.atmosphere.temperature_comp import TemperatureComp
+from turbofan.atmosphere.density_comp import DensityComp
 
 class AeroGroup(Group):
     def initialize(self):
@@ -13,6 +15,15 @@ class AeroGroup(Group):
 
 
 ## Need CDv CD0 CL0 CLa 
+        comp = PressureComp()
+        self.add_subsystem('pressure_comp', comp, promotes=['*'])
+
+        comp = TemperatureComp()
+        self.add_subsystem('temperature_comp', comp, promotes=['*'])
+
+        comp = DensityComp() 
+        self.add_subsystem('density_comp', comp, promotes=['*'])
+
 
         comp = PowerCombinationComp(
             shape=shape,
