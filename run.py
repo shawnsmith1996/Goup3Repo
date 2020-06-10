@@ -74,7 +74,7 @@ comp.add_output('mission_year',val=100)    #constant missions per year
 comp.add_output('passenger',val=400)
 comp.add_output('ticket_price',val=100)
 #fix these?
-comp.add_output('R',val=1300,units='km') #range
+comp.add_output('R',val=6500,units='km') #range
 comp.add_output('payload_weight',val=44000, units='kg')
 comp.add_output('crew_weight',val=1100, units='kg')
 ## fix these 
