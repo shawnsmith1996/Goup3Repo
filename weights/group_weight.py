@@ -21,8 +21,8 @@ class weightGroup(Group):
         comp = FuelWeightRatio()
         self.add_subsystem('FuelWeightRatio',comp,promotes=['*'])
 
-        comp = EmptyWeightFraction()
-        self.add_subsystem('Empty_Weight_Fraction',comp, promotes=['*'])
+#        comp = EmptyWeightFraction()
+#        self.add_subsystem('Empty_Weight_Fraction',comp, promotes=['*'])
 
         comp = GrossWeight()
         self.add_subsystem('GrossWeight',comp,promotes=['*'])

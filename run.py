@@ -59,55 +59,37 @@ aircraft = Aircraft(
 
 prob = Problem()
 comp = IndepVarComp()
-comp.add_output('speed', val=250.) # units='m/s' , val=250.
-comp.add_output('altitude',  val=7.)# units = 'km' , val=7
-comp.add_output('ref_mac', val=7.) # , val=7.
-comp.add_output('alpha', val=3. * np.pi / 180.)# , val=3. * np.pi / 180.
-comp.add_output('ref_area', val=427.8) # , val=427.8
-
-#comp.add_design_var('speed', lower=200., upper = 300.) # units='m/s' , val=250.
-#comp.add_design_var('altitude', lower=4., upper = 14.)# units = 'km' , val=7
-#comp.add_design_var('ref_mac', units='m', lower=4., upper = 14.) # , val=7.
-#comp.add_design_var('alpha', lower=0., upper = 5.)# , val=3. * np.pi / 180.
-#comp.add_design_var('ref_area', lower=200., upper = 800.) # , val=427.8
-#comp.add_output('drag_coeff', val=0.021, shape=shape)
-#comp.add_output('lift_to_drag_ratio', val=14.5, shape=shape)
+comp.add_output('speed', val=250., lower=200., upper = 300.) # units='m/s' , val=250.
+comp.add_output('altitude',  val=7., lower=4., upper = 14.)# units = 'km' , val=7
+comp.add_output('ref_mac', val=7., lower=4., upper = 14.) # , val=7.
+comp.add_output('alpha', val=3. * np.pi / 180., lower=0.* np.pi / 180., upper = 5.* np.pi / 180.)# , val=3. * np.pi / 180.
+comp.add_output('ref_area', val=427.8,lower=200., upper = 800.) # , val=427.8
+comp.add_output('empty_weight_fraction',val=0.5,lower=0.45, upper =0.55)
 prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
-
 
 comp = IndepVarComp()
 comp.add_output('large_production_quentity',val=1600)#constant production plan in 10 years (1600)
 comp.add_output('learning_curve',val=0.8)        #constant learning curve effect 60%~95%
-comp.add_output('mission_year',val=100)    #constant missions per year
-        
+comp.add_output('mission_year',val=100)    #constant missions per year   
 comp.add_output('passenger',val=400)
-comp.add_output('ticket_price',val=150)
-
+comp.add_output('ticket_price',val=100)
 #fix these?
 comp.add_output('R',val=1300,units='km') #range
 comp.add_output('payload_weight',val=44000, units='kg')
 comp.add_output('crew_weight',val=1100, units='kg')
-#comp.add_output('empty_weight_fraction',val=0.4)
-
 ## fix these 
 comp.add_output('A', val=0.222) ## still need to fix these values #Modeling Constants
-#comp.add_output('B', val=0.7)#Modeling Constants
 comp.add_output('n', val=-0.6)#Modeling Constants
-#comp.add_output('k', val=-0.00001) #Modeling Constants
-
-
 ## Below prob okay
 comp.add_output('specific_fuel_consum', val=17.1, units= 'g/(kN*s)') #dependent on engine
-
 comp.add_output('MHFH', val=10) ## Maintaince Hour Per Flight Hour
 comp.add_output('M_max', val=0.83) ## Engine max mach number
-comp.add_output('T_max', val=106802, units='N') ## Engine max Thrust
+comp.add_output('T_max', val=106.802, units='kN') ## Engine max Thrust
 comp.add_output('EN', val=500 * 2) ## Engine Number
 comp.add_output('FH', val=3500, units='h') ###flight hour
 comp.add_output('FTA', val=3) ###FTA flight test
 comp.add_output('Q', val=500) ### Less number production
 comp.add_output('Tinlet', val = 3303, units='K') ## Turbine inlet temperature
-
 prob.model.add_subsystem('constants', comp, promotes=['*'])
 
 
@@ -123,9 +105,18 @@ prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
 group = TurbofanGroup(shape=shape)
 prob.model.add_subsystem('propulsion_group', group, promotes=['*'])
 
-group = weight_cost()
-prob.model.add_subsystem('weight_cost', group, promotes=['*'])
+group = weightGroup()
+prob.model.add_subsystem('weight_group', group, promotes=['*'])
 
+group = CostGroup()
+prob.model.add_subsystem('cost_group', group, promotes=['*'])
+
+prob.model.add_design_var('speed', lower=200., upper = 300.) # units='m/s' , val=250.
+prob.model.add_design_var('altitude',lower=4000., upper = 14000.)# units = 'km' , val=7
+prob.model.add_design_var('ref_mac', lower=4., upper = 14.) # , val=7.
+prob.model.add_design_var('alpha', lower=0., upper = 5.* np.pi / 180.)# , val=3. * np.pi / 180.
+prob.model.add_design_var('ref_area',lower=200., upper = 800.) # , val=427.8
+prob.model.add_design_var('empty_weight_fraction',lower=0.45, upper =0.55)
 
 prob.model.connect('aerodynamics_analysis_group.drag_coeff','drag_coeff')
 prob.model.connect('aerodynamics_analysis_group.lift_to_drag_ratio','lift_to_drag_ratio')
