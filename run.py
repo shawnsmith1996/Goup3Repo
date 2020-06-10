@@ -55,28 +55,6 @@ aircraft = Aircraft(
     analyses=analyses,
     aircraft_type='transport',
 )
-aerodynamics_name='aerodynamics'
-final_aero_name='final_aero'
-
-
-
-
-
-powertrain=Powertrain()
-
-powertrain.add_module(Aerodynamics(
-    name=aerodynamics_name,
-))
-powertrain.add_module(AeroGroup(
-    name=final_aero_name,
-))
-
-powertrain.add_link(
-    aerodynamics_name, ['drag_coeff','lift_to_drag_ratio'],
-    final_aero_name, ['drag_coeff','lift_to_drag_ratio'],
-)
-
-
 
 
 prob = Problem()
@@ -146,6 +124,7 @@ group = TurbofanGroup(shape=shape)
 prob.model.add_subsystem('propulsion_group', group, promotes=['*'])
 
 group = weight_cost()
+prob.model.add_subsystem('weight_cost', group, promotes=['*'])
 
 
 prob.model.connect('aerodynamics_analysis_group.drag_coeff','drag_coeff')
