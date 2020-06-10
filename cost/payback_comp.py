@@ -68,6 +68,6 @@ def compute_partials(self, inputs, partials):
         Tic = inputs['ticket_price']
         
         partials['Paybackperiod_year', 'RDTE']=1.20175*MY*Tic/Pass/LQ
-        partials['Paybackperiod_year', 'Flyaway']=1.20175*MY*Tic*Q**(np.log(LC)/np.log(2))/Pass
+        partials['Paybackperiod_year', 'Flyaway']=1.20175*MY*Tic*LQ**(np.log(LC)/np.log(2))/Pass
         partials['Paybackperiod_year', 'Fuel']=1.7143*MY**2*Tic/Pass
         partials['Paybackperiod_year', 'Main']=1.011*MY*Tic/Pass

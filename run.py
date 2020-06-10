@@ -74,18 +74,18 @@ comp.add_output('mission_year',val=100)    #constant missions per year
 comp.add_output('passenger',val=400)
 comp.add_output('ticket_price',val=100)
 #fix these?
-comp.add_output('R',val=1300,units='km') #range
+comp.add_output('R',val=6500,units='km') #range
 comp.add_output('payload_weight',val=44000, units='kg')
 comp.add_output('crew_weight',val=1100, units='kg')
 ## fix these 
 comp.add_output('A', val=0.222) ## still need to fix these values #Modeling Constants
 comp.add_output('n', val=-0.6)#Modeling Constants
 ## Below prob okay
-comp.add_output('specific_fuel_consum', val=17.1, units= 'g/(kN*s)') #dependent on engine
+comp.add_output('specific_fuel_consum', val=0.0087, units= 'g/(kN*s)') #dependent on engine General_Electric_CF6
 comp.add_output('MHFH', val=10) ## Maintaince Hour Per Flight Hour
 comp.add_output('M_max', val=0.83) ## Engine max mach number
-comp.add_output('T_max', val=106.802, units='kN') ## Engine max Thrust
-comp.add_output('EN', val=500 * 2) ## Engine Number
+comp.add_output('T_max', val=310, units='kN') ## Engine max Thrust
+comp.add_output('EN', val=2) ## Engine Number
 comp.add_output('FH', val=3500, units='h') ###flight hour
 comp.add_output('FTA', val=3) ###FTA flight test
 comp.add_output('Q', val=500) ### Less number production
@@ -158,6 +158,14 @@ prob.model.list_outputs(prom_name=True)
 
 prob.check_partials(compact_print=True)
 
+print("Flyaway")
+print(prob['Flyaway'])
+print("Ticket Price")
+print(prob['ticket_price'])
+print("Payback Period")
+print(prob['Paybackperiod_year'])
+print("SFC")
+print(prob['specific_fuel_consum'])
 
 
 #### add solver for coupled groups for values Keeps feeding until converge
