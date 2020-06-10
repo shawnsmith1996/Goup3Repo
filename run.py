@@ -158,14 +158,14 @@ prob.model.list_outputs(prom_name=True)
 
 prob.check_partials(compact_print=True)
 
-print("Flyaway")
-print(prob['Flyaway'])
-print("Ticket Price")
-print(prob['ticket_price'])
-print("Payback Period")
-print(prob['Paybackperiod_year'])
-print("SFC")
-print(prob['specific_fuel_consum'])
+#print("Flyaway")
+#print(prob['Flyaway'])
+#print("Ticket Price")
+#print(prob['ticket_price'])
+#print("Payback Period")
+#print(prob['Paybackperiod_year'])
+#print("SFC")
+#print(prob['specific_fuel_consum'])
 
 
 #### add solver for coupled groups for values Keeps feeding until converge
