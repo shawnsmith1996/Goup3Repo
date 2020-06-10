@@ -128,8 +128,8 @@ prob.model.add_subsystem('aircraft_group', aircraft_group, promotes=['*'])
 ########## Leave above commented ###########
 
 
-#group = AeroGroup(shape=shape)
-#prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
+group = AeroGroup(shape=shape)
+prob.model.add_subsystem('drag_lift_group', group, promotes=['*'])
 
 group = TurbofanGroup(shape=shape)
 prob.model.add_subsystem('propulsion_group', group, promotes=['*'])
