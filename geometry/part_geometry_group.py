@@ -19,6 +19,7 @@ class PartGeometryGroup(Group):
         comp.add_output('dummy_var')
         for name in [
             'wetted_area',
+            'characteristic_length'
         ]:
             comp.add_output(name, shape=shape)
         self.add_subsystem('inputs_comp', comp, promotes=['*'])

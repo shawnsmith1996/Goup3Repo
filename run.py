@@ -75,12 +75,17 @@ powertrain.add_link(
 
 prob = Problem()
 comp = IndepVarComp()
-comp.add_output('speed', val=250., shape=shape) # units='m/s'
-comp.add_output('altitude', val=7., shape=shape) # units = 'km'
-comp.add_output('ref_mac', val=7., shape=shape, units='m') ### Mean Chord
-comp.add_output('alpha', val=3. * np.pi / 180., shape=shape)
-comp.add_output('ref_area', val=427.8, shape=shape)
+comp.add_output('speed', val=250.) # units='m/s' , val=250.
+comp.add_output('altitude',  val=7.)# units = 'km' , val=7
+comp.add_output('ref_mac', val=7.) # , val=7.
+comp.add_output('alpha', val=3. * np.pi / 180.)# , val=3. * np.pi / 180.
+comp.add_output('ref_area', val=427.8) # , val=427.8
 
+#comp.add_design_var('speed', lower=200., upper = 300.) # units='m/s' , val=250.
+#comp.add_design_var('altitude', lower=4., upper = 14.)# units = 'km' , val=7
+#comp.add_design_var('ref_mac', units='m', lower=4., upper = 14.) # , val=7.
+#comp.add_design_var('alpha', lower=0., upper = 5.)# , val=3. * np.pi / 180.
+#comp.add_design_var('ref_area', lower=200., upper = 800.) # , val=427.8
 #comp.add_output('drag_coeff', val=0.021, shape=shape)
 #comp.add_output('lift_to_drag_ratio', val=14.5, shape=shape)
 prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
@@ -164,8 +169,8 @@ prob['tail_geometry_group.mac'] = 5.
 prob['fuselage_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
 prob['fuselage_geometry_group.characteristic_length'] = 73.
 
-#prob['balance_group.wetted_area'] = 73 * 2 * np.pi * 3.1
-#prob['balance_group.characteristic_length'] = 73.
+prob['balance_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
+prob['balance_geometry_group.characteristic_length'] = 73.
 ########## Leave above commented ###########
 
 prob.run_model()
