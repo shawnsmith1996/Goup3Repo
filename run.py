@@ -58,6 +58,10 @@ aircraft = Aircraft(
 aerodynamics_name='aerodynamics'
 final_aero_name='final_aero'
 
+
+
+
+
 powertrain=Powertrain()
 
 powertrain.add_module(Aerodynamics(
@@ -71,6 +75,8 @@ powertrain.add_link(
     aerodynamics_name, ['drag_coeff','lift_to_drag_ratio'],
     final_aero_name, ['drag_coeff','lift_to_drag_ratio'],
 )
+
+
 
 
 prob = Problem()
@@ -141,6 +147,9 @@ prob.model.add_subsystem('propulsion_group', group, promotes=['*'])
 
 group = weight_cost()
 
+
+prob.model.connect('aerodynamics_analysis_group.drag_coeff','drag_coeff')
+prob.model.connect('aerodynamics_analysis_group.lift_to_drag_ratio','lift_to_drag_ratio')
 #prob.driver = ScipyOptimizeDriver()
 #prob.driver.options['optimizer'] = 'SLSQP'
 #prob.driver.options['tol'] = 1e-15
@@ -169,8 +178,8 @@ prob['tail_geometry_group.mac'] = 5.
 prob['fuselage_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
 prob['fuselage_geometry_group.characteristic_length'] = 73.
 
-prob['balance_geometry_group.wetted_area'] = 73 * 2 * np.pi * 3.1
-prob['balance_geometry_group.characteristic_length'] = 73.
+prob['balance_geometry_group.wetted_area'] =  427.8 * 2.1
+prob['balance_geometry_group.characteristic_length'] = 7. ## potentially wing and likely wign
 ########## Leave above commented ###########
 
 prob.run_model()
