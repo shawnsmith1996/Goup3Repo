@@ -65,6 +65,13 @@ comp.add_output('ref_mac', val=7., lower=4., upper = 14.) # , val=7.
 comp.add_output('alpha', val=3. * np.pi / 180., lower=0.* np.pi / 180., upper = 5.* np.pi / 180.)# , val=3. * np.pi / 180.
 comp.add_output('ref_area', val=427.8,lower=200., upper = 800.) # , val=427.8
 comp.add_output('empty_weight_fraction',val=0.5,lower=0.45, upper =0.55)
+
+comp.add_design_var('speed', lower=200., upper = 300.) # units='m/s' , val=250.
+comp.add_design_var('altitude',lower=4., upper = 14.)# units = 'km' , val=7
+comp.add_design_var('ref_mac', lower=4., upper = 14.) # , val=7.
+comp.add_design_var('alpha', lower=0., upper = 5.* np.pi / 180.)# , val=3. * np.pi / 180.
+comp.add_design_var('ref_area',lower=200., upper = 800.) # , val=427.8
+comp.add_design_var('empty_weight_fraction',lower=0.45, upper =0.55)
 prob.model.add_subsystem('opt_input_comp', comp, promotes=['*'])
 
 comp = IndepVarComp()
@@ -78,14 +85,14 @@ comp.add_output('R',val=6500,units='km') #range
 comp.add_output('payload_weight',val=44000, units='kg')
 comp.add_output('crew_weight',val=1100, units='kg')
 ## fix these 
-comp.add_output('A', val=0.222) ## still need to fix these values #Modeling Constants
+comp.add_output('A', val=0.222) #Modeling Constants
 comp.add_output('n', val=-0.6)#Modeling Constants
 ## Below prob okay
 comp.add_output('specific_fuel_consum', val=0.0087, units= 'g/(kN*s)') #dependent on engine General_Electric_CF6
 comp.add_output('MHFH', val=10) ## Maintaince Hour Per Flight Hour
 comp.add_output('M_max', val=0.83) ## Engine max mach number
-comp.add_output('T_max', val=310, units='kN') ## Engine max Thrust
-comp.add_output('EN', val=2) ## Engine Number
+comp.add_output('T_max', val=6*310, units='kN') ## Engine max Thrust
+comp.add_output('EN', val=6) ## Engine Number
 comp.add_output('FH', val=3500, units='h') ###flight hour
 comp.add_output('FTA', val=3) ###FTA flight test
 comp.add_output('Q', val=500) ### Less number production
@@ -109,21 +116,17 @@ group = weightGroup()
 prob.model.add_subsystem('weight_group', group, promotes=['*'])
 
 group = CostGroup()
+group.add_objective('Paybackperiod_year', scaler=-1.)
 prob.model.add_subsystem('cost_group', group, promotes=['*'])
-
-prob.model.add_design_var('speed', lower=200., upper = 300.) # units='m/s' , val=250.
-prob.model.add_design_var('altitude',lower=4000., upper = 14000.)# units = 'km' , val=7
-prob.model.add_design_var('ref_mac', lower=4., upper = 14.) # , val=7.
-prob.model.add_design_var('alpha', lower=0., upper = 5.* np.pi / 180.)# , val=3. * np.pi / 180.
-prob.model.add_design_var('ref_area',lower=200., upper = 800.) # , val=427.8
-prob.model.add_design_var('empty_weight_fraction',lower=0.45, upper =0.55)
 
 prob.model.connect('aerodynamics_analysis_group.drag_coeff','drag_coeff')
 prob.model.connect('aerodynamics_analysis_group.lift_to_drag_ratio','lift_to_drag_ratio')
-#prob.driver = ScipyOptimizeDriver()
-#prob.driver.options['optimizer'] = 'SLSQP'
-#prob.driver.options['tol'] = 1e-15
-#prob.driver.options['disp'] = True
+
+
+prob.driver = ScipyOptimizeDriver()
+prob.driver.options['optimizer'] = 'SLSQP'
+prob.driver.options['tol'] = 1e-15
+prob.driver.options['disp'] = True
 
 prob.setup(check=True)
 
@@ -154,19 +157,9 @@ prob['balance_geometry_group.characteristic_length'] = 7. ## potentially wing an
 
 prob.run_model()
 prob.model.list_outputs(prom_name=True)
-#prob.run_driver()
+prob.run_driver()
 
 prob.check_partials(compact_print=True)
-
-#print("Flyaway")
-#print(prob['Flyaway'])
-#print("Ticket Price")
-#print(prob['ticket_price'])
-#print("Payback Period")
-#print(prob['Paybackperiod_year'])
-#print("SFC")
-#print(prob['specific_fuel_consum'])
-
 
 #### add solver for coupled groups for values Keeps feeding until converge
 #### two groups coupled wherever they are called: 
@@ -176,3 +169,6 @@ prob.check_partials(compact_print=True)
 # two groups that are coupled => create seperate group
 
 #abs relative error numb is very smoll
+
+# Visualization: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- 
+

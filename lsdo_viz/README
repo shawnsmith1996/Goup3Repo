@@ -1,0 +1,10 @@
+To run: 
+
+lm -r   [lsdo_om -run]
+
+
+To optimize and generate a video:
+
+lm -o   [lsdo_om -optimize]
+lv -va  [lsdo_viz -viz_all; make all frames]
+lv -m   [lsdo_viz -movie; make movie from frames]
